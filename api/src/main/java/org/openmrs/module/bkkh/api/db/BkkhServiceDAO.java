@@ -13,10 +13,10 @@
  */
 package org.openmrs.module.bkkh.api.db;
 
-import org.openmrs.module.bkkh.api.BkkhServiceService;
+import org.openmrs.module.bkkh.api.BkkhService;
 
 /**
- *  Database methods for {@link BkkhServiceService}.
+ *  Database methods for {@link BkkhService}.
  */
 public interface BkkhServiceDAO {
 	

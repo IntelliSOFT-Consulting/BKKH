@@ -16,13 +16,13 @@ package org.openmrs.module.bkkh.api.impl;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.bkkh.api.BkkhServiceService;
+import org.openmrs.module.bkkh.api.BkkhService;
 import org.openmrs.module.bkkh.api.db.BkkhServiceDAO;
 
 /**
- * It is a default implementation of {@link BkkhServiceService}.
+ * It is a default implementation of {@link BkkhService}.
  */
-public class BkkhServiceServiceImpl extends BaseOpenmrsService implements BkkhServiceService {
+public class BkkhServiceImpl extends BaseOpenmrsService implements BkkhService {
 	
 	protected final Log log = LogFactory.getLog(this.getClass());
 	

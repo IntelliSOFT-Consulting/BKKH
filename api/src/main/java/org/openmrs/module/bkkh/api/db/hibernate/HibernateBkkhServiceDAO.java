@@ -22,6 +22,7 @@ import org.openmrs.module.bkkh.api.db.BkkhServiceDAO;
  * It is a default implementation of  {@link BkkhServiceDAO}.
  */
 public class HibernateBkkhServiceDAO implements BkkhServiceDAO {
+
 	protected final Log log = LogFactory.getLog(this.getClass());
 	
 	private SessionFactory sessionFactory;
