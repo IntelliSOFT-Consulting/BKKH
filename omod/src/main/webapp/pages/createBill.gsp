@@ -2,16 +2,22 @@
     ui.decorateWith("appui", "standardEmrPage")
 %>
 
-${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient.patient ]) }
+${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
-Hello, world.
+<div id="content" class="container">
+    <h1>${ui.message("bkkh.createBill")}</h1>
+    <fieldset>
+        <legend>${ui.message("bkkh.createBill")}</legend>
 
-<% if (context.authenticated) { %>
-And a special hello to you, $context.authenticatedUser.personName.fullName.
-Your roles are:
-<% context.authenticatedUser.roles.findAll { !it.retired }.each { %>
-$it.role ($it.description)
-<% } %>
-<% } else { %>
-You are not logged in.
-<% } %>
+        <form class="simple-form-ui" id="uploadFile" method="post">
+            <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
+            <label for="name">Name</label>
+            <input id="name" type="text" name="name"/>
+            <label for="description">Description</label>
+            <input id="description" type="text" name="description"/>
+            <label for="cost">Cost</label>
+            <input id="cost" type="number" name="cost"/>
+            <input type="submit" value="Save"/>
+        </form>
+    </fieldset>
+</div>
