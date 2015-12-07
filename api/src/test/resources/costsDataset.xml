@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <costs id="1" patient_id="5" date="2015-01-12" stay="0.00" procedure="0.00" anaesthesia="0.00" doctor="200" meds="500.20"
+        lab="0.00" xray="0.00" supplies="0.00" file="100.00" follow_up="0.00" NHIF="0.00" total="800.20" paid="600.00" balance="200.20"
+        account_charged="10001000115"/>
+    <costs id="1" patient_id="5" date="2015-01-12" stay="0.00" procedure="0.00" anaesthesia="0.00" doctor="200" meds="500.20"
+           lab="0.00" xray="0.00" supplies="0.00" file="100.00" follow_up="0.00" NHIF="0.00" total="800.20" paid="600.00" balance="200.20"
+           account_charged="10001000115"/>
+</dataset>

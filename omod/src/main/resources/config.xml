@@ -46,7 +46,7 @@
     <!-- Maps hibernate file's, if present -->
     <mappingFiles>
 
-        Bkkh.hbm.xml
+        Costs.hbm.xml
 
     </mappingFiles>
 
