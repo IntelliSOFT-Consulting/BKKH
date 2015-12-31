@@ -21,7 +21,7 @@ public class Costs {
     private double supplies;
     private double file;
     private double followUp;
-    private double nhif;
+    private ModeOfPayment modeOfPayment;
     private double total;
     private double paid;
     private double balance;
@@ -131,12 +131,12 @@ public class Costs {
         this.followUp = followUp;
     }
 
-    public double getNhif() {
-        return nhif;
+    public ModeOfPayment getModeOfPayment() {
+        return modeOfPayment;
     }
 
-    public void setNhif(double nhif) {
-        this.nhif = nhif;
+    public void setModeOfPayment(ModeOfPayment modeOfPayment) {
+        this.modeOfPayment = modeOfPayment;
     }
 
     public double getTotal() {
