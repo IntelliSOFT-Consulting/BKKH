@@ -11,17 +11,22 @@
         </id>
         <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" not-null="true" />
         <property name="date" column="date_created" type="java.util.Date" not-null="false" />
-        <property name="stay" column="stay" type="double" not-null="false" />
-        <property name="procedure" column="procedure_amount" type="double" not-null="false" />
-        <property name="anaesthesia" column="anaesthesia" type="double" not-null="false" />
-        <property name="doctor" column="doctor" type="double" not-null="false" />
-        <property name="medications" column="meds" type="double" not-null="false" />
-        <property name="lab" column="lab" type="double" not-null="false" />
-        <property name="xray" column="xray" type="double" not-null="false" />
-        <property name="supplies" column="supplies" type="double" not-null="false" />
-        <property name="file" column="file" type="double" not-null="false" />
-        <property name="followUp" column="follow_up" type="double" not-null="false" />
-        <property name="nhif" column="nhif" type="double" not-null="false" />
+        <property name="stay" column="stay_cost" type="double" not-null="false" />
+        <property name="procedure" column="procedure_cost" type="double" not-null="false" />
+        <property name="anaesthesia" column="anaesthesia_cost" type="double" not-null="false" />
+        <property name="doctor" column="doctor_cost" type="double" not-null="false" />
+        <property name="medications" column="meds_cost" type="double" not-null="false" />
+        <property name="lab" column="lab_cost" type="double" not-null="false" />
+        <property name="xray" column="xray_cost" type="double" not-null="false" />
+        <property name="supplies" column="supplies_cost" type="double" not-null="false" />
+        <property name="file" column="file_cost" type="double" not-null="false" />
+        <property name="followUp" column="follow_up_cost" type="double" not-null="false" />
+        <property name="modeOfPayment" column="mode_of_payment" not-null="false" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.openmrs.module.bkkh.ModeOfPayment</param>
+                <param name="type">12</param>
+            </type>
+        </property>
         <property name="total" column="total" type="double" not-null="false" />
         <property name="paid" column="paid" type="double" not-null="false" />
         <property name="balance" column="balance" type="double" not-null="false" />

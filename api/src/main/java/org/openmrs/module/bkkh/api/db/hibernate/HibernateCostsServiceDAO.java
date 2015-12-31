@@ -28,12 +28,11 @@ public class HibernateCostsServiceDAO implements CostsServiceDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
     public void saveCosts(Costs costs) {
         sessionFactory.getCurrentSession().saveOrUpdate(costs);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
     public List<Costs> getCosts(Patient patient) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Costs.class, "costs");
         if (patient != null) {
@@ -42,7 +41,7 @@ public class HibernateCostsServiceDAO implements CostsServiceDAO {
         return (List<Costs>)criteria.list();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
     public Costs getLastCosts(Patient patient) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Costs.class);
         criteria.addOrder(Order.desc("date"));

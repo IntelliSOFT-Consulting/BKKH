@@ -29,27 +29,27 @@
 
             <column name="date_created" type="datetime" />
 
-            <column name="stay" type="double" />
+            <column name="stay_cost" type="double" />
 
-            <column name="procedure_amount" type="double" />
+            <column name="procedure_cost" type="double" />
 
-            <column name="anaesthesia" type="double" />
+            <column name="anaesthesia_cost" type="double" />
 
-            <column name="doctor" type="double" />
+            <column name="doctor_cost" type="double" />
 
-            <column name="meds" type="double" />
+            <column name="meds_cost" type="double" />
 
-            <column name="lab" type="double" />
+            <column name="lab_cost" type="double" />
 
-            <column name="xray" type="double" />
+            <column name="xray_cost" type="double" />
 
-            <column name="supplies" type="double" />
+            <column name="supplies_cost" type="double" />
 
-            <column name="file" type="double" />
+            <column name="file_cost" type="double" />
 
-            <column name="follow_up" type="double" />
+            <column name="follow_up_cost" type="double" />
 
-            <column name="nhif" type="double" />
+            <column name="mode_of_payment" type="varchar(15)" />
 
             <column name="total" type="double" />
 
