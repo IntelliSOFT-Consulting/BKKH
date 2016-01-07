@@ -3,11 +3,13 @@ package org.openmrs.module.bkkh;
 import org.openmrs.Patient;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by gitahi on 30/11/15.
  */
-public class Costs {
+public class Charges {
     private long id;
     private Patient patient;
     private Date date;
@@ -22,10 +24,8 @@ public class Costs {
     private double file;
     private double followUp;
     private ModeOfPayment modeOfPayment;
-    private double total;
-    private double paid;
-    private double balance;
     private int accountCharged;
+    private Set<Payment> payments = new HashSet<Payment>();
 
     public Long getId() {
         return id;
@@ -140,27 +140,28 @@ public class Costs {
     }
 
     public double getTotal() {
-        return total;
+        return stay + procedure + anaesthesia + 
+            doctor + medications + lab + xray + supplies + file + followUp;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
-    }
+    public Set<Payment> getPayments() {
+		return payments;
+	}
 
-    public double getPaid() {
-        return paid;
-    }
+	public void addPayment(Payment payment) {
+		this.payments.add(payment);
+	}
 
-    public void setPaid(double paid) {
-        this.paid = paid;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
     public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
+        double totalPayment = 0;
+        for (Payment payment : payments) {
+            totalPayment += payment.getPaid();
+        }
+        return getTotal() - totalPayment;
     }
 
     public int getAccountCharged() {

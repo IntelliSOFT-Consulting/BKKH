@@ -1,7 +1,7 @@
 package org.openmrs.module.bkkh.api;
 
 import org.openmrs.Patient;
-import org.openmrs.module.bkkh.Costs;
+import org.openmrs.module.bkkh.Charges;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * Created by gitahi on 30/11/15.
  */
-public interface CostsService {
+public interface ChargesService {
 
     @Transactional
-    void saveCosts(Costs costs);
+    void saveCharges(Charges charges);
 
     @Transactional(readOnly=true)
-    List<Costs> getCosts(Patient patient);
+    List<Charges> getCharges(Patient patient);
 
     @Transactional(readOnly=true)
-    Costs getLastCosts(Patient patient);
+    Charges getLastCharges(Patient patient);
 }

@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.openmrs.module.bkkh">
 
-    <class name="org.openmrs.module.bkkh.Costs" table="bkkh_costs">
+    <class name="org.openmrs.module.bkkh.Charges" table="bkkh_charges">
         <id name="id" type="long" column="id" unsaved-value="0">
             <generator class="native" />
         </id>
@@ -28,9 +28,11 @@
             </type>
         </property>
         <property name="total" column="total" type="double" not-null="false" />
-        <property name="paid" column="paid" type="double" not-null="false" />
-        <property name="balance" column="balance" type="double" not-null="false" />
         <property name="accountCharged" column="account_charged" type="int" not-null="false" />
+        <set name="payments" order-by="payment_id">
+            <key column="charges_id" not-null="true" />
+            <one-to-many class="org.openmrs.module.bkkh.Payment" />
+        </set>
     </class>
 
 </hibernate-mapping>

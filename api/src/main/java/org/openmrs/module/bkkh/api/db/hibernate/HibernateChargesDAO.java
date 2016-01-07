@@ -7,15 +7,15 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
-import org.openmrs.module.bkkh.Costs;
-import org.openmrs.module.bkkh.api.db.CostsServiceDAO;
+import org.openmrs.module.bkkh.Charges;
+import org.openmrs.module.bkkh.api.db.ChargesDAO;
 
 import java.util.List;
 
 /**
  * Created by USER on 01/12/2015.
  */
-public class HibernateCostsServiceDAO implements CostsServiceDAO {
+public class HibernateChargesDAO implements ChargesDAO {
 
     protected final Log log = LogFactory.getLog(this.getClass());
 
@@ -28,25 +28,25 @@ public class HibernateCostsServiceDAO implements CostsServiceDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public void saveCosts(Costs costs) {
-        sessionFactory.getCurrentSession().saveOrUpdate(costs);
+    public void saveCharges(Charges charges) {
+        sessionFactory.getCurrentSession().saveOrUpdate(charges);
     }
 
     @SuppressWarnings("unchecked")
-    public List<Costs> getCosts(Patient patient) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Costs.class, "costs");
+    public List<Charges> getCharges(Patient patient) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Charges.class, "costs");
         if (patient != null) {
             criteria.add(Restrictions.eq("costs.patient", patient));
         }
-        return (List<Costs>)criteria.list();
+        return (List<Charges>)criteria.list();
     }
 
     @SuppressWarnings("unchecked")
-    public Costs getLastCosts(Patient patient) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Costs.class);
+    public Charges getLastCharges(Patient patient) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Charges.class);
         criteria.addOrder(Order.desc("date"));
         criteria.setMaxResults(1);
-        List<Costs> costsList = criteria.list();
-        return costsList.size() > 0 ? costsList.get(0) : null;
+        List<Charges> chargesList = criteria.list();
+        return chargesList.size() > 0 ? chargesList.get(0) : null;
     }
 }

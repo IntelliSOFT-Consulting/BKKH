@@ -1,9 +1,10 @@
 package org.openmrs.module.bkkh.page.controller;
 
 import org.openmrs.Patient;
-import org.openmrs.module.bkkh.Costs;
+import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.ModeOfPayment;
-import org.openmrs.module.bkkh.api.CostsService;
+import org.openmrs.module.bkkh.Payment;
+import org.openmrs.module.bkkh.api.ChargesService;
 import org.openmrs.module.emrapi.patient.PatientDomainWrapper;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
@@ -21,7 +22,7 @@ import java.util.Map;
 /**
  * Created by gitahi on 24/11/15.
  */
-public class CostsPageController {
+public class ChargesPageController {
 
     public void get
             (
@@ -32,7 +33,7 @@ public class CostsPageController {
         patientDomainWrapper.setPatient(patient);
         model.addAttribute("patient", patientDomainWrapper);
         model.addAttribute("modeOfPayment", ModeOfPayment.values());
-        Costs costs = new Costs();
+        Charges costs = new Charges();
         costs.setAccountCharged(111111111);
 		model.addAttribute("costs", costs);
     }
@@ -40,16 +41,17 @@ public class CostsPageController {
     public String post
             (
                     @RequestParam("patientId") Patient patient,
-                    @ModelAttribute("costs") @BindParams Costs costs,
+                    @BindParams Charges charges,
+                    @BindParams Payment payment,
                     PageModel model,
                     @InjectBeans PatientDomainWrapper patientDomainWrapper,
-                    @SpringBean("costsService") CostsService costsService,
+                    @SpringBean("chargesService") ChargesService costsService,
                     UiUtils ui,
                     BindingResult bindingResult
             ) {
-        costs.setDate(new Date());
-        costs.setPatient(patient);
-        costsService.saveCosts(costs);
+        charges.setDate(new Date());
+        charges.setPatient(patient);
+        costsService.saveCharges(charges);
         
         patientDomainWrapper.setPatient(patient);
         model.addAttribute("patient", patientDomainWrapper);
