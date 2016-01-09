@@ -11,6 +11,8 @@ public class Payment extends BaseOpenmrsObject {
 	private double paid;
 	private Date paymentDate;
 	private String accountCharged;
+	private ModeOfPayment modeOfPayment;
+	private Charges charges;
 
 	public Integer getId() {
 		return getPaymentId();
@@ -58,6 +60,22 @@ public class Payment extends BaseOpenmrsObject {
 
 	public void setAccountCharged(String accountCharged) {
 		this.accountCharged = accountCharged;
+	}
+
+	public ModeOfPayment getModeOfPayment() {
+		return modeOfPayment;
+	}
+
+	public void setModeOfPayment(ModeOfPayment modeOfPayment) {
+		this.modeOfPayment = modeOfPayment;
+	}
+
+	public Charges getCharges() {
+		return charges;
+	}
+
+	public void setCharges(Charges charges) {
+		this.charges = charges;
 	}
 
 }

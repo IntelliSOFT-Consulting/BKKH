@@ -23,12 +23,17 @@ public class ChargesServiceImpl implements ChargesService {
     }
 
     @Override
-    public List<Charges> getCharges(Patient patient) {
-        return dao.getCharges(patient);
+    public List<Charges> getChargesByPatient(Patient patient) {
+        return dao.getChargesByPatient(patient);
     }
 
     @Override
     public Charges getLastCharges(Patient patient) {
         return dao.getLastCharges(patient);
     }
+
+	@Override
+	public Charges getCharges(long chargesId) {
+		return dao.getCharges(chargesId);
+	}
 }

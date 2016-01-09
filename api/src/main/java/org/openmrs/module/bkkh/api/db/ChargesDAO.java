@@ -1,9 +1,9 @@
 package org.openmrs.module.bkkh.api.db;
 
+import java.util.List;
+
 import org.openmrs.Patient;
 import org.openmrs.module.bkkh.Charges;
-
-import java.util.List;
 
 /**
  * Created by USER on 01/12/2015.
@@ -11,7 +11,9 @@ import java.util.List;
 public interface ChargesDAO {
     void saveCharges(Charges charges);
 
-    List<Charges> getCharges(Patient patient);
+    List<Charges> getChargesByPatient(Patient patient);
+
+    Charges getCharges(long chargesId);
 
     Charges getLastCharges(Patient patient);
 }

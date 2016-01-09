@@ -33,7 +33,7 @@ public class HibernateChargesDAO implements ChargesDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<Charges> getCharges(Patient patient) {
+    public List<Charges> getChargesByPatient(Patient patient) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Charges.class, "costs");
         if (patient != null) {
             criteria.add(Restrictions.eq("costs.patient", patient));
@@ -49,4 +49,11 @@ public class HibernateChargesDAO implements ChargesDAO {
         List<Charges> chargesList = criteria.list();
         return chargesList.size() > 0 ? chargesList.get(0) : null;
     }
+
+	@Override
+	public Charges getCharges(long chargesId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Charges.class);
+		criteria.add(Restrictions.eq("id", chargesId));
+		return (Charges) criteria.list().get(0);
+	}
 }

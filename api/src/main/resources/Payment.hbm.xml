@@ -13,5 +13,12 @@
         <property name="paid" column="amount_paid" type="double" not-null="false" />
         <property name="nhif" column="nhif" type="boolean" not-null="false" />
         <property name="accountCharged" type="java.lang.String" column="account_charged" length="255" />
+        <property name="modeOfPayment" column="mode_of_payment" not-null="false" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.openmrs.module.bkkh.ModeOfPayment</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <many-to-one name="charges" class="org.openmrs.module.bkkh.Charges" column="charges_id" not-null="true" />
     </class>
 </hibernate-mapping>

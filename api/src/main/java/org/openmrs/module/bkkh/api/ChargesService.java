@@ -1,10 +1,10 @@
 package org.openmrs.module.bkkh.api;
 
+import java.util.List;
+
 import org.openmrs.Patient;
 import org.openmrs.module.bkkh.Charges;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Created by gitahi on 30/11/15.
@@ -15,7 +15,10 @@ public interface ChargesService {
     void saveCharges(Charges charges);
 
     @Transactional(readOnly=true)
-    List<Charges> getCharges(Patient patient);
+    List<Charges> getChargesByPatient(Patient patient);
+
+    @Transactional(readOnly=true)
+    Charges getCharges(long chargesId);
 
     @Transactional(readOnly=true)
     Charges getLastCharges(Patient patient);

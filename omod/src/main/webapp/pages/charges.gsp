@@ -73,57 +73,57 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
             <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
             <p>
                 <label for="stay">Stay</label>
-                <input id="stay" type="number" step="any" name="stay" value="${charges.stay}" min="0" max="1000000" class="cost"/>
+                <input id="stay" type="number" step="any" name="charges.stay" value="${charges.stay}" min="0" max="1000000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="procedure">Procedure</label>
-                <input id="procedure" type="number" step="any" name="procedure" value="${charges.procedure}" min="0" max="300000" class="cost"/>
+                <input id="procedure" type="number" step="any" name="charges.procedure" value="${charges.procedure}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="anaesthesia">Anaesthesia</label>
-                <input id="anaesthesia" type="number" step="any" name="anaesthesia" value="${charges.anaesthesia}" min="0" max="300000" class="cost"/>
+                <input id="anaesthesia" type="number" step="any" name="charges.anaesthesia" value="${charges.anaesthesia}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="doctor">Doctor</label>
-                <input id="doctor" type="number" step="any" name="doctor" value="${charges.doctor}" min="0" max="300000" class="cost"/>
+                <input id="doctor" type="number" step="any" name="charges.doctor" value="${charges.doctor}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="meds">Meds</label>
-                <input id="meds" type="number" step="any" name="medications" value="${charges.medications}" min="0" max="300000" class="cost"/>
+                <input id="meds" type="number" step="any" name="charges.medications" value="${charges.medications}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="lab">Lab</label>
-                <input id="lab" type="number" step="any" name="lab" value="${charges.lab}" min="0" max="300000" class="cost"/>
+                <input id="lab" type="number" step="any" name="charges.lab" value="${charges.lab}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="xray">X-Ray</label>
-                <input id="xray" type="number" step="any" name="xray" value="${charges.xray}" min="0" max="300000" class="cost"/>
+                <input id="xray" type="number" step="any" name="charges.xray" value="${charges.xray}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="supplies">Supplies</label>
-                <input id="supplies" type="number" step="any" name="supplies" value="${charges.supplies}" min="0" max="300000" class="cost"/>
+                <input id="supplies" type="number" step="any" name="charges.supplies" value="${charges.supplies}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="file">File</label>
-                <input id="file" type="number" step="any" name="file" value="${charges.file}" min="0" max="300000" class="cost"/>
+                <input id="file" type="number" step="any" name="charges.file" value="${charges.file}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="followUp">Follow-up</label>
-                <input id="followUp" type="number" step="any" name="followUp" value="${charges.followUp}" min="0" max="300000" class="cost"/>
+                <input id="followUp" type="number" step="any" name="charges.followUp" value="${charges.followUp}" min="0" max="300000" class="cost"/>
                 <span class="error"></span>
             </p>
             <p>
                 <label for="modeOfPayment">Mode of Payment</label>
-                <select id="modeOfPayment" name="modeOfPayment">
+                <select id="modeOfPayment" name="payment.modeOfPayment">
                     <% modeOfPayment.each { mode -> %>
                         <option value="${mode.toString()}" <% if (charges.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
                     <% } %>
