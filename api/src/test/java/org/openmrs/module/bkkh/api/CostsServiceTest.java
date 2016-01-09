@@ -24,9 +24,9 @@ public class CostsServiceTest extends BaseModuleContextSensitiveTest {
     public void should_getAllCosts() throws Exception {
         executeDataSet("costsDataset.xml");
 
-        //Patient patient = Context.getPatientService().getPatient(5);
+        Patient patient = Context.getPatientService().getPatient(5);
 
-        List<Charges> costsList = costsService.getCharges(null);
+        List<Charges> costsList = costsService.getChargesByPatient(null);
 
         Assert.assertEquals(2, costsList.size());
     }

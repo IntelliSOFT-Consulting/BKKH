@@ -72,13 +72,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
+            <column name="uuid" type="char(38)" />
+
             <column name="payment_date" type="datetime" />
 
             <column name="amount_paid" type="double" />
 
             <column name="nhif" type="tinyint(1)" />
 
-            <column name="account_charged" type="double" />
+            <column name="account_charged" type="varchar(50)" />
 
             <column name="charges_id" type="int" />
 
@@ -89,6 +91,9 @@
         <addForeignKeyConstraint baseTableName="bkkh_payment" baseColumnNames="charges_id"
                                  constraintName="fk_payment_charges"
                                  referencedTableName="bkkh_charges" referencedColumnNames="charges_id" />
+        <modifySql dbms="mssql">
+                <replace replace="CHAR(38)" with="UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID()" />
+        </modifySql>
     </changeSet>
     
 </databaseChangeLog>

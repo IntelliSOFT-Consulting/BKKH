@@ -5,11 +5,11 @@
 
 <hibernate-mapping package="org.openmrs.module.bkkh">
     <class name="org.openmrs.module.bkkh.Payment" table="bkkh_payment">
-        <id name="paymentId" type="long" column="payment_id" unsaved-value="null">
+        <id name="paymentId" type="java.lang.Integer" column="payment_id" unsaved-value="null">
             <generator class="native" />
         </id>
         <property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
-        <property name="date" column="payment_date" type="java.util.Date" not-null="false" />
+        <property name="paymentDate" column="payment_date" type="java.util.Date" not-null="false" />
         <property name="paid" column="amount_paid" type="double" not-null="false" />
         <property name="nhif" column="nhif" type="boolean" not-null="false" />
         <property name="accountCharged" type="java.lang.String" column="account_charged" length="255" />

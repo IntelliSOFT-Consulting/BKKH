@@ -46,8 +46,8 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.CostsService</value>
-				<ref local="costsService" />
+				<value>${project.parent.groupId}.${project.parent.artifactId}.api.ChargesService</value>
+				<ref local="chargesService" />
 			</list>
 		</property>
 	</bean>
