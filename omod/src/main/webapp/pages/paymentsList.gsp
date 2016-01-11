@@ -6,10 +6,11 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <div>
     <h3>Charges Info:</h3>
-    <ol>
+    <ul>
         <li>Date: ${ui.formatDatePretty(charges.date)}</li>
         <li>Total: KES ${charges.total}</li>
         <li>Balance: KES ${charges.balance}</li>
+        <!-- 
         <li>Stay: KES ${charges.stay}</li>
         <li>Procedure: KES ${charges.procedure}</li>
         <li>Anaesthesia: KES ${charges.anaesthesia}</li>
@@ -19,8 +20,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
         <li>X-ray: KES ${charges.xray}</li>
         <li>Supplies: KES ${charges.supplies}</li>
         <li>File: KES ${charges.file}</li>
-        <li>Follow-uli: KES ${charges.followUp}</li>
-    </ol>
+        <li>Follow-up: KES ${charges.followUp}</li>
+         -->
+    </ul>
 </div>
 
 <table>
