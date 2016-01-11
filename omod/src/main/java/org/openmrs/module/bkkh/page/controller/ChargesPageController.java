@@ -43,7 +43,7 @@ public class ChargesPageController {
                     @BindParams("payment") Payment payment,
                     PageModel model,
                     @InjectBeans PatientDomainWrapper patientDomainWrapper,
-                    @SpringBean("chargesService") ChargesService costsService,
+                    @SpringBean("chargesService") ChargesService chargesService,
                     UiUtils ui,
                     BindingResult bindingResult
             ) {
@@ -51,14 +51,14 @@ public class ChargesPageController {
         charges.setPatient(patient);
         payment.setCharges(charges);
         charges.addPayment(payment);
-        costsService.saveCharges(charges);
+        chargesService.saveCharges(charges);
         
         patientDomainWrapper.setPatient(patient);
         model.addAttribute("patient", patientDomainWrapper);
         
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("patientId", patient.getUuid());
-        String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("coreapps", "clinicianfacing/patient", params);
+        String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesList", params);
 		return redirectUrl;
     }
 }

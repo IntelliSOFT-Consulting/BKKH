@@ -1,14 +1,29 @@
 <%
     ui.decorateWith("appui", "standardEmrPage")
+    ui.includeJavascript("uicommons", "handlebars/handlebars.min.js", Integer.MAX_VALUE - 1);
+    ui.includeJavascript("uicommons", "navigator/validators.js", Integer.MAX_VALUE - 19)
+    ui.includeJavascript("uicommons", "navigator/navigator.js", Integer.MAX_VALUE - 20)
+    ui.includeJavascript("uicommons", "navigator/navigatorHandlers.js", Integer.MAX_VALUE - 21)
+    ui.includeJavascript("uicommons", "navigator/navigatorModels.js", Integer.MAX_VALUE - 21)
+    ui.includeJavascript("uicommons", "navigator/navigatorTemplates.js", Integer.MAX_VALUE - 21)
+    ui.includeJavascript("uicommons", "navigator/exitHandlers.js", Integer.MAX_VALUE - 22);
 %>
 
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
 <script>
+    var NavigatorController;
     function getFloatValue(source) {
         return isNaN(parseFloat(source)) ? 0 : parseFloat(source);
     }
+
+    var emrMessages = {};
+
+    emrMessages["numericRangeHigh"] = "value should be less than {0}";
+    emrMessages["numericRangeLow"] = "value should be more than {0}";
+
     jq(function(){
+        NavigatorController = new KeyboardController();
         jq(".cost").on("blur", function(){
             if (isValidNumber(this) && isNumberWithinRange(this)) {
                 var total = calculateTotal();
@@ -66,89 +81,248 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
     }
 </script>
 
+<div id="validation-errors" class="note-container" style="display: none" >
+    <div class="note error">
+        <div id="validation-errors-content" class="text">
+
+        </div>
+    </div>
+</div>
+
 <div id="content" class="container">
     <h1>${ui.message("bkkh.costs")}</h1>
-    <fieldset>
-        <form class="simple-form-ui" id="uploadFile" method="post">
-            <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
-            <p>
-                <label for="stay">Stay</label>
-                <input id="stay" type="number" step="any" name="charges.stay" value="${charges.stay}" min="0" max="1000000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="procedure">Procedure</label>
-                <input id="procedure" type="number" step="any" name="charges.procedure" value="${charges.procedure}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="anaesthesia">Anaesthesia</label>
-                <input id="anaesthesia" type="number" step="any" name="charges.anaesthesia" value="${charges.anaesthesia}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="doctor">Doctor</label>
-                <input id="doctor" type="number" step="any" name="charges.doctor" value="${charges.doctor}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="meds">Meds</label>
-                <input id="meds" type="number" step="any" name="charges.medications" value="${charges.medications}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="lab">Lab</label>
-                <input id="lab" type="number" step="any" name="charges.lab" value="${charges.lab}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="xray">X-Ray</label>
-                <input id="xray" type="number" step="any" name="charges.xray" value="${charges.xray}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="supplies">Supplies</label>
-                <input id="supplies" type="number" step="any" name="charges.supplies" value="${charges.supplies}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="file">File</label>
-                <input id="file" type="number" step="any" name="charges.file" value="${charges.file}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="followUp">Follow-up</label>
-                <input id="followUp" type="number" step="any" name="charges.followUp" value="${charges.followUp}" min="0" max="300000" class="cost"/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="modeOfPayment">Mode of Payment</label>
-                <select id="modeOfPayment" name="payment.modeOfPayment">
-                    <% modeOfPayment.each { mode -> %>
-                        <option value="${mode.toString()}" <% if (charges.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
-                    <% } %>
-                </select>
-                <span class="error"></span>
-            <p>
-                <label for="total">Total</label>
-                <span id="total">KES ${charges.total}</span>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="paid">Cost Paid</label>
-                <input id="paid" type="number" step="any" name="payment.paid" value=""/>
-                <span class="error"></span>
-            </p>
-            <p>
-                <label for="balance">Balance</label>
-                <span id="balance">KES ${charges.balance}</span>
-            </p>
-            <p>
-                <label for="account">Account Charged</label>
-                <input id="account" type="number" step="any" name="payment.accountCharged" />
-                <span class="error"></span>
-            </p>
-            <input type="submit" value="Save"/>
+        <form class="simple-form-ui" id="charges" method="post">
+            <section id="charges-info">
+                <span class="title">Charges</span>
+                <fieldset>
+                    <legend>Stay</legend>
+                    <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
+                    <p>
+                         ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Stay",
+                            id:"charges.stay",
+                            formFieldName: "charges.stay",
+                            maxLength: 7,
+                            min: 0,
+                            max: 1000000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Procedure</legend>
+                    <p>
+                         ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Procedure",
+                            id:"charges.procedure",
+                            formFieldName: "charges.procedure",
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Anaesthesia</legend>
+                    <p>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Anaesthesia",
+                            id:"charges.anaesthesia",
+                            formFieldName: "charges.anaesthesia",
+                            initialValue: charges.anaesthesia,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Doctor</legend>
+                    <p>
+                        <label for="doctor">Doctor</label>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Doctor",
+                            id:"charges.doctor",
+                            formFieldName: "charges.doctor",
+                            initialValue: charges.doctor,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Medication</legend>
+                    <p>
+                        <label for="meds">Meds</label>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Meds",
+                            id:"charges.medications",
+                            formFieldName: "charges.medications",
+                            initialValue: charges.medications,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Lab</legend>
+                    <p>
+                        <label for="lab">Lab</label>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Lab",
+                            id:"charges.lab",
+                            formFieldName: "charges.lab",
+							initialValue: charges.lab,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>X-ray</legend>
+                    <p>
+                        <label for="xray">X-ray</label>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "X-ray",
+                            id:"charges.xray",
+                            formFieldName: "charges.xray",
+							initialValue: charges.xray,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Supplies</legend>
+                    <p>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Supplies",
+                            id:"charges.supplies",
+                            formFieldName: "charges.supplies",
+							initialValue: charges.supplies,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>File</legend>
+                    <p>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "File",
+                            id:"charges.file",
+                            formFieldName: "charges.file",
+							initialValue: charges.file,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Follow-up</legend>
+                    <p>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Follow-up",
+                            id:"charges.followUp",
+                            formFieldName: "charges.followUp",
+							initialValue: charges.followUp,
+                            maxLength: 7,
+                            min: 0,
+                            max: 300000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+            </section>
+            <section>
+                <span class="title">Payment Info</span>
+                <fieldset>
+                    <legend>Mode of Payment</legend>
+                    <p>
+                        <label for="modeOfPayment">Mode of Payment</label>
+                        <select id="modeOfPayment" name="payment.modeOfPayment">
+                        <% modeOfPayment.each { mode -> %>
+                            <option value="${mode.toString()}" <% if (charges.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
+                        <% } %>
+                        </select>
+                        <span class="error"></span>
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Paid</legend>
+                    <p>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Cost Paid",
+                            id:"payment.paid",
+                            formFieldName: "payment.paid",
+                            maxLength: 7,
+                            min: 0,
+                            max: 10000000,
+                            classes: ["costs", "numeric-range"],
+                            left: true
+                        ])}
+                    </p>
+                    <p>
+                        <label for="total">Total</label>
+                        <span id="total">KES ${charges.total}</span>
+                        <span class="error"></span>
+                    </p>
+                    <p>
+                        <label for="balance">Balance</label>
+                        <span id="balance">KES ${charges.balance}</span>
+                    </p>
+                </fieldset>
+                <fieldset>
+                    <legend>Account Charged</legend>
+                    <p>
+                        ${ ui.includeFragment("uicommons", "field/text", [
+                            label: "Account Charged",
+                            id:"account",
+                            formFieldName: "payment.accountCharged",
+                            classes: ["costs"],
+                            left: true
+                        ])}
+                    </p>
+                </fieldset>
+            </section>
+            <div id="confirmation">
+                <span id="confirmation_label" class="title">Charges Summary</span>
+                <div class="before-dataCanvas"></div>
+                <div id="dataCanvas"></div>
+                <div class="after-data-canvas"></div>
+                <div id="confirmationQuestion">
+                    Are the details correct?
+                    <p style="display: inline">
+                        <input id="submit" type="submit" class="submitButton confirm right" value="YES" />
+                    </p>
+                    <p style="display: inline">
+                        <input id="cancelSubmission" class="cancel" type="button" value="NO" />
+                    </p>
+                </div>
+            </div>
         </form>
-    </fieldset>
 </div>

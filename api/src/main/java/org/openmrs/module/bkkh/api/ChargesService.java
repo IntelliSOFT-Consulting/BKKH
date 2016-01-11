@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.openmrs.Patient;
 import org.openmrs.module.bkkh.Charges;
+import org.openmrs.module.bkkh.Payment;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,8 +19,10 @@ public interface ChargesService {
     List<Charges> getChargesByPatient(Patient patient);
 
     @Transactional(readOnly=true)
-    Charges getCharges(long chargesId);
+    Charges getCharges(Integer chargesId);
 
     @Transactional(readOnly=true)
     Charges getLastCharges(Patient patient);
+
+	Payment getPayment(Integer paymentId);
 }

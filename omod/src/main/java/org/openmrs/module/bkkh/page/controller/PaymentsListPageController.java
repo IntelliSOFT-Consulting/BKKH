@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public class PaymentsListPageController {
 	public void get(
-			@RequestParam("chargesId") long chargesId,
+			@RequestParam("chargesId") Integer chargesId,
 			@RequestParam("patientId") Patient patient,
 			@SpringBean("chargesService") ChargesService chargesService,
 			PageModel model) {
 		model.addAttribute("patient", patient);
 		Charges charges = chargesService.getCharges(chargesId);
-		//charges.getPayments();
 		model.addAttribute("charges", charges);
 	}
 }

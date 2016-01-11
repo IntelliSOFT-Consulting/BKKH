@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by gitahi on 30/11/15.
  */
 public class Charges {
-	private long id;
+	private Integer id;
 	private Patient patient;
 	private Date date;
 	private double stay;
@@ -26,11 +26,11 @@ public class Charges {
 	private ModeOfPayment modeOfPayment;
 	private Set<Payment> payments = new HashSet<Payment>();
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -152,10 +152,6 @@ public class Charges {
 
 	public void addPayment(Payment payment) {
 		this.payments.add(payment);
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public double getBalance() {

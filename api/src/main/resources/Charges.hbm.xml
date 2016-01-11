@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.openmrs.module.bkkh">
 
     <class name="org.openmrs.module.bkkh.Charges" table="bkkh_charges">
-        <id name="id" type="long" column="charges_id" unsaved-value="0">
+        <id name="id" type="java.lang.Integer" column="charges_id" unsaved-value="0">
             <generator class="native" />
         </id>
         <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" not-null="true" />
