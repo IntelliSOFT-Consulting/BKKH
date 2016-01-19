@@ -5,8 +5,8 @@
 
 <hibernate-mapping package="org.openmrs.module.bkkh">
 
-    <class name="org.openmrs.module.bkkh.Costs" table="bkkh_costs">
-        <id name="id" type="long" column="id" unsaved-value="0">
+    <class name="org.openmrs.module.bkkh.Charges" table="bkkh_charges">
+        <id name="id" type="java.lang.Integer" column="charges_id" unsaved-value="0">
             <generator class="native" />
         </id>
         <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" not-null="true" />
@@ -21,16 +21,10 @@
         <property name="supplies" column="supplies_cost" type="double" not-null="false" />
         <property name="file" column="file_cost" type="double" not-null="false" />
         <property name="followUp" column="follow_up_cost" type="double" not-null="false" />
-        <property name="modeOfPayment" column="mode_of_payment" not-null="false" >
-            <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">org.openmrs.module.bkkh.ModeOfPayment</param>
-                <param name="type">12</param>
-            </type>
-        </property>
-        <property name="total" column="total" type="double" not-null="false" />
-        <property name="paid" column="paid" type="double" not-null="false" />
-        <property name="balance" column="balance" type="double" not-null="false" />
-        <property name="accountCharged" column="account_charged" type="int" not-null="false" />
+        <set name="payments" cascade="all" order-by="payment_id" inverse="true">
+            <key column="charges_id" not-null="true" />
+            <one-to-many class="org.openmrs.module.bkkh.Payment" />
+        </set>
     </class>
 
 </hibernate-mapping>

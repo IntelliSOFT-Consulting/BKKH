@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="org.openmrs.module.bkkh">
+    <class name="org.openmrs.module.bkkh.Payment" table="bkkh_payment">
+        <id name="paymentId" type="java.lang.Integer" column="payment_id" unsaved-value="null">
+            <generator class="native" />
+        </id>
+        <property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+        <property name="paymentDate" column="payment_date" type="java.util.Date" not-null="false" />
+        <property name="paid" column="amount_paid" type="double" not-null="false" />
+        <property name="nhif" column="nhif" type="boolean" not-null="false" />
+        <property name="accountCharged" type="java.lang.String" column="account_charged" length="255" />
+        <property name="modeOfPayment" column="mode_of_payment" not-null="false" >
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">org.openmrs.module.bkkh.ModeOfPayment</param>
+                <param name="type">12</param>
+            </type>
+        </property>
+        <many-to-one name="charges" class="org.openmrs.module.bkkh.Charges" column="charges_id" not-null="true" />
+    </class>
+</hibernate-mapping>

@@ -5,7 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.bkkh.Costs;
+import org.openmrs.module.bkkh.Charges;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,16 +17,16 @@ import java.util.List;
 public class CostsServiceTest extends BaseModuleContextSensitiveTest {
 
     @Autowired
-    private CostsService costsService;
+    private ChargesService costsService;
 
     @Test
     @Ignore
     public void should_getAllCosts() throws Exception {
         executeDataSet("costsDataset.xml");
 
-        //Patient patient = Context.getPatientService().getPatient(5);
+        Patient patient = Context.getPatientService().getPatient(5);
 
-        List<Costs> costsList = costsService.getCosts(null);
+        List<Charges> costsList = costsService.getChargesByPatient(null);
 
         Assert.assertEquals(2, costsList.size());
     }

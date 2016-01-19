@@ -46,7 +46,8 @@
     <!-- Maps hibernate file's, if present -->
     <mappingFiles>
 
-        Costs.hbm.xml
+        Charges.hbm.xml
+        Payment.hbm.xml
 
     </mappingFiles>
 

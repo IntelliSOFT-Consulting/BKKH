@@ -8,20 +8,20 @@
         See http://www.liquibase.org/manual/home#available_database_refactorings
         for a list of supported elements and attributes
     -->
-    <changeSet id="bkkh_costs_create_table" author="intellisoft">
+    <changeSet id="bkkh_charges_create_table" author="gwasilwa">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="bkkh_costs"/>
+                <tableExists tableName="bkkh_charges"/>
             </not>
         </preConditions>
 
         <comment >
-            Create table bkkh_costs, for storing cost details
+            Create table bkkh_charges, for storing cost details
         </comment>
 
-        <createTable tableName="bkkh_costs">
+        <createTable tableName="bkkh_charges">
 
-            <column name="id" type="int" autoIncrement="true">
+            <column name="charges_id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -49,21 +49,51 @@
 
             <column name="follow_up_cost" type="double" />
 
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="bkkh_charges" baseColumnNames="patient_id"
+                                 constraintName="fk_charges_patient"
+                                 referencedTableName="patient" referencedColumnNames="patient_id" />
+    </changeSet>
+    <changeSet id="bkkh_payment_create_table" author="gwasilwa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="bkkh_payment"/>
+            </not>
+        </preConditions>
+
+        <comment >
+            Create table bkkh_costs, for storing cost details
+        </comment>
+
+        <createTable tableName="bkkh_payment">
+
+            <column name="payment_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="uuid" type="char(38)" />
+
+            <column name="payment_date" type="datetime" />
+
+            <column name="amount_paid" type="double" />
+
+            <column name="nhif" type="tinyint(1)" />
+
+            <column name="account_charged" type="varchar(50)" />
+
+            <column name="charges_id" type="int" />
+
             <column name="mode_of_payment" type="varchar(15)" />
-
-            <column name="total" type="double" />
-
-            <column name="paid" type="double" />
-
-            <column name="balance" type="double" />
-
-            <column name="account_charged" type="int" />
 
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="bkkh_costs" baseColumnNames="patient_id"
-                                 constraintName="Patient associated with cost"
-                                 referencedTableName="patient" referencedColumnNames="patient_id" />
+        <addForeignKeyConstraint baseTableName="bkkh_payment" baseColumnNames="charges_id"
+                                 constraintName="fk_payment_charges"
+                                 referencedTableName="bkkh_charges" referencedColumnNames="charges_id" />
+        <modifySql dbms="mssql">
+                <replace replace="CHAR(38)" with="UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID()" />
+        </modifySql>
     </changeSet>
     
 </databaseChangeLog>
