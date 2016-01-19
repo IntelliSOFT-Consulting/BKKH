@@ -16,7 +16,7 @@
         </preConditions>
 
         <comment >
-            Create table bkkh_costs, for storing cost details
+            Create table bkkh_charges, for storing cost details
         </comment>
 
         <createTable tableName="bkkh_charges">
@@ -51,7 +51,7 @@
 
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="bkkh_costs" baseColumnNames="patient_id"
+        <addForeignKeyConstraint baseTableName="bkkh_charges" baseColumnNames="patient_id"
                                  constraintName="fk_charges_patient"
                                  referencedTableName="patient" referencedColumnNames="patient_id" />
     </changeSet>
