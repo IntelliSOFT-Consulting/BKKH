@@ -13,16 +13,16 @@ public class Charges {
 	private Integer id;
 	private Patient patient;
 	private Date date;
-	private double stay;
-	private double procedure;
-	private double anaesthesia;
-	private double doctor;
-	private double medications;
-	private double lab;
-	private double xray;
-	private double supplies;
-	private double file;
-	private double followUp;
+	private Double stay = new Double(0);
+	private Double procedure = new Double(0);
+	private Double anaesthesia = new Double(0);
+	private Double doctor = new Double(0);
+	private Double medications = new Double(0);
+	private Double lab = new Double(0);
+	private Double xray = new Double(0);
+	private Double supplies = new Double(0);
+	private Double file = new Double(0);
+	private Double followUp = new Double(0);
 	private ModeOfPayment modeOfPayment;
 	private Set<Payment> payments = new HashSet<Payment>();
 
@@ -50,83 +50,83 @@ public class Charges {
 		this.date = date;
 	}
 
-	public double getStay() {
-		return stay;
+	public Double getStay() {
+		return stay == null ? 0 : stay;
 	}
 
-	public void setStay(double stay) {
+	public void setStay(Double stay) {
 		this.stay = stay;
 	}
 
-	public double getProcedure() {
-		return procedure;
+	public Double getProcedure() {
+		return procedure == null ? 0 : procedure;
 	}
 
-	public void setProcedure(double procedure) {
+	public void setProcedure(Double procedure) {
 		this.procedure = procedure;
 	}
 
-	public double getAnaesthesia() {
-		return anaesthesia;
+	public Double getAnaesthesia() {
+		return anaesthesia == null ? 0 : anaesthesia;
 	}
 
-	public void setAnaesthesia(double anaesthesia) {
+	public void setAnaesthesia(Double anaesthesia) {
 		this.anaesthesia = anaesthesia;
 	}
 
-	public double getDoctor() {
-		return doctor;
+	public Double getDoctor() {
+		return doctor == null ? 0 : doctor;
 	}
 
-	public void setDoctor(double doctor) {
+	public void setDoctor(Double doctor) {
 		this.doctor = doctor;
 	}
 
-	public double getMedications() {
-		return medications;
+	public Double getMedications() {
+		return medications == null ? 0 : medications;
 	}
 
-	public void setMedications(double medications) {
+	public void setMedications(Double medications) {
 		this.medications = medications;
 	}
 
-	public double getLab() {
-		return lab;
+	public Double getLab() {
+		return lab == null ? 0 : lab;
 	}
 
-	public void setLab(double lab) {
+	public void setLab(Double lab) {
 		this.lab = lab;
 	}
 
-	public double getXray() {
-		return xray;
+	public Double getXray() {
+		return xray == null ? 0 : xray;
 	}
 
-	public void setXray(double xray) {
+	public void setXray(Double xray) {
 		this.xray = xray;
 	}
 
-	public double getSupplies() {
-		return supplies;
+	public Double getSupplies() {
+		return supplies == null ? 0 : supplies;
 	}
 
-	public void setSupplies(double supplies) {
+	public void setSupplies(Double supplies) {
 		this.supplies = supplies;
 	}
 
-	public double getFile() {
-		return file;
+	public Double getFile() {
+		return file == null ? 0 : file;
 	}
 
-	public void setFile(double file) {
+	public void setFile(Double file) {
 		this.file = file;
 	}
 
-	public double getFollowUp() {
-		return followUp;
+	public Double getFollowUp() {
+		return followUp == null ? 0 : followUp;
 	}
 
-	public void setFollowUp(double followUp) {
+	public void setFollowUp(Double followUp) {
 		this.followUp = followUp;
 	}
 
@@ -138,8 +138,8 @@ public class Charges {
 		this.modeOfPayment = modeOfPayment;
 	}
 
-	public double getTotal() {
-		return stay + procedure + anaesthesia + doctor + medications + lab + xray + supplies + file + followUp;
+	public Double getTotal() {
+		return this.getStay() + this.getProcedure() + this.getAnaesthesia() + this.getDoctor() + this.getMedications() + this.getLab() + this.getXray() + this.getSupplies() + this.getFile() + this.getFollowUp();
 	}
 
 	public Set<Payment> getPayments() {
@@ -154,12 +154,13 @@ public class Charges {
 		this.payments.add(payment);
 	}
 
-	public double getBalance() {
-		double totalPayment = 0;
+	public Double getBalance() {
+		Double totalPayment = 0D;
 		for (Payment payment : payments) {
 			totalPayment += payment.getPaid();
 		}
-		return getTotal() - totalPayment;
+		Double total = getTotal();
+		return total - totalPayment;
 	}
 
 }

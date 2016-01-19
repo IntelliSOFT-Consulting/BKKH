@@ -8,7 +8,7 @@ public class Payment extends BaseOpenmrsObject {
 
 	private Integer paymentId;
 	private boolean nhif;
-	private double paid;
+	private Double paid;
 	private Date paymentDate;
 	private String accountCharged;
 	private ModeOfPayment modeOfPayment;
@@ -38,11 +38,11 @@ public class Payment extends BaseOpenmrsObject {
 		this.nhif = nhif;
 	}
 
-	public double getPaid() {
-		return paid;
+	public Double getPaid() {
+		return paid == null ? 0: paid;
 	}
 
-	public void setPaid(double paid) {
+	public void setPaid(Double paid) {
 		this.paid = paid;
 	}
 
