@@ -24,9 +24,11 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
     jq(function(){
         NavigatorController = new KeyboardController();
-        jq(".cost").on("blur", function(){
+        jq(".costs").on("change", function(){
+            console.log("change called");
             if (isValidNumber(this) && isNumberWithinRange(this)) {
                 var total = calculateTotal();
+                console.log("Total: " + total);
                 jq("#total").html("KES " + total);
                 jq("#total").change();
             }
@@ -36,9 +38,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
             }
         });
 
-        jq("#total,#paid").on("change", function(){
+        jq("#total,#paid-field").on("change", function(){
             var total = calculateTotal();
-            var paid = getFloatValue(jq("#paid").val());
+            var paid = getFloatValue(jq("#paid-field").val());
             jq("#balance").html("KES " + (total - paid));
         });
     });
@@ -56,24 +58,22 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
         var max = getFloatValue(jq(charge).attr("max"));
         
         if (value < min || value > max) {
-            console.log("value outside range");
             return false;
         }
-        console.log("value within range");
         return true;
     }
     
     function calculateTotal() {
-        var stay = getFloatValue(jq("#stay").val());
-        var procedure = getFloatValue(jq("#procedure").val());
-        var anaesthesia = getFloatValue(jq("#anaesthesia").val());
-        var doctor = getFloatValue(jq("#doctor").val());
-        var meds = getFloatValue(jq("#meds").val());
-        var lab = getFloatValue(jq("#lab").val());
-        var xray = getFloatValue(jq("#xray").val());
-        var supplies = getFloatValue(jq("#supplies").val());
-        var file = getFloatValue(jq("#file").val());
-        var followUp = getFloatValue(jq("#followUp").val());
+        var stay = getFloatValue(jq("#stay-field").val());
+        var procedure = getFloatValue(jq("#procedure-field").val());
+        var anaesthesia = getFloatValue(jq("#anaesthesia-field").val());
+        var doctor = getFloatValue(jq("#doctor-field").val());
+        var meds = getFloatValue(jq("#medications-field").val());
+        var lab = getFloatValue(jq("#lab-field").val());
+        var xray = getFloatValue(jq("#xray-field").val());
+        var supplies = getFloatValue(jq("#supplies-field").val());
+        var file = getFloatValue(jq("#file-field").val());
+        var followUp = getFloatValue(jq("#followUp-field").val());
 
         var total = stay + procedure + anaesthesia + doctor + meds 
             + lab + xray + supplies + file + followUp;
@@ -94,14 +94,15 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
         <form class="simple-form-ui" id="charges" method="post">
             <section id="charges-info">
                 <span class="title">Charges</span>
+                <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
                 <fieldset>
                     <legend>Stay</legend>
-                    <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
                     <p>
                          ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Stay",
-                            id:"charges.stay",
+                            id:"stay",
                             formFieldName: "charges.stay",
+							initialValue: charges.stay,
                             maxLength: 7,
                             min: 0,
                             max: 1000000,
@@ -115,8 +116,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                          ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Procedure",
-                            id:"charges.procedure",
+                            id:"procedure",
                             formFieldName: "charges.procedure",
+							initialValue: charges.procedure,
                             maxLength: 7,
                             min: 0,
                             max: 300000,
@@ -130,7 +132,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Anaesthesia",
-                            id:"charges.anaesthesia",
+                            id:"anaesthesia",
                             formFieldName: "charges.anaesthesia",
                             initialValue: charges.anaesthesia,
                             maxLength: 7,
@@ -144,10 +146,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                 <fieldset>
                     <legend>Doctor</legend>
                     <p>
-                        <label for="doctor">Doctor</label>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Doctor",
-                            id:"charges.doctor",
+                            id:"doctor",
                             formFieldName: "charges.doctor",
                             initialValue: charges.doctor,
                             maxLength: 7,
@@ -161,10 +162,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                 <fieldset>
                     <legend>Medication</legend>
                     <p>
-                        <label for="meds">Meds</label>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Meds",
-                            id:"charges.medications",
+                            id:"medications",
                             formFieldName: "charges.medications",
                             initialValue: charges.medications,
                             maxLength: 7,
@@ -178,10 +178,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                 <fieldset>
                     <legend>Lab</legend>
                     <p>
-                        <label for="lab">Lab</label>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Lab",
-                            id:"charges.lab",
+                            id:"lab",
                             formFieldName: "charges.lab",
 							initialValue: charges.lab,
                             maxLength: 7,
@@ -195,10 +194,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                 <fieldset>
                     <legend>X-ray</legend>
                     <p>
-                        <label for="xray">X-ray</label>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "X-ray",
-                            id:"charges.xray",
+                            id:"xray",
                             formFieldName: "charges.xray",
 							initialValue: charges.xray,
                             maxLength: 7,
@@ -214,7 +212,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Supplies",
-                            id:"charges.supplies",
+                            id:"supplies",
                             formFieldName: "charges.supplies",
 							initialValue: charges.supplies,
                             maxLength: 7,
@@ -230,7 +228,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "File",
-                            id:"charges.file",
+                            id:"file",
                             formFieldName: "charges.file",
 							initialValue: charges.file,
                             maxLength: 7,
@@ -246,7 +244,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Follow-up",
-                            id:"charges.followUp",
+                            id:"followUp",
                             formFieldName: "charges.followUp",
 							initialValue: charges.followUp,
                             maxLength: 7,
@@ -277,13 +275,13 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                         ${ ui.includeFragment("uicommons", "field/text", [
                             label: "Cost Paid",
-                            id:"payment.paid",
+                            id:"paid",
                             formFieldName: "payment.paid",
                             maxLength: 7,
                             min: 0,
                             max: 10000000,
                             classes: ["costs", "numeric-range"],
-                            left: true
+                            left: false
                         ])}
                     </p>
                     <p>

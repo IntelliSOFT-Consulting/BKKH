@@ -25,6 +25,12 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
     </ul>
 </div>
 
+<div>
+    <p>
+        <a href="${ ui.pageLink("bkkh", "payment", [ chargesId: charges.id, patientId: patient.uuid ]) }">Add Charges</a>
+    </p>
+</div>
+
 <table>
     <thead>
         <th>Payment Date</th>
