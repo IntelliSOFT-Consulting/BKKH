@@ -1,45 +1,109 @@
+
 <%
     ui.decorateWith("appui", "standardEmrPage")
 %>
 
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
-<div>
-    <h3>Charges Info:</h3>
-    <ul>
-        <li>Date: ${ui.formatDatePretty(charges.date)}</li>
-        <li>Total: KES ${charges.total}</li>
-        <li>Balance: KES ${charges.balance}</li>
-        <!-- 
-        <li>Stay: KES ${charges.stay}</li>
-        <li>Procedure: KES ${charges.procedure}</li>
-        <li>Anaesthesia: KES ${charges.anaesthesia}</li>
-        <li>Doctor: KES ${charges.doctor}</li>
-        <li>Medications: KES ${charges.medications}</li>
-        <li>Lab: KES ${charges.lab}</li>
-        <li>X-ray: KES ${charges.xray}</li>
-        <li>Supplies: KES ${charges.supplies}</li>
-        <li>File: KES ${charges.file}</li>
-        <li>Follow-up: KES ${charges.followUp}</li>
-         -->
-    </ul>
+<div class="dashboard">
+	<div class="info-header">
+		<h3>Charges</h3>
+	</div>
+	<div class="info-body">
+		<section>
+			<fieldset>
+				<h3>Stay:</h3>
+				<p class="left">
+					KES
+					${charges.stay}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Procedure:</h3>
+				<p class="left">
+					KES
+					${charges.procedure}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Anaesthesia:</h3>
+				<p class="left">
+					KES
+					${charges.anaesthesia}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Doctor:</h3>
+				<p class="left">
+					KES
+					${charges.doctor}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Medication:</h3>
+				<p class="left">
+					KES
+					${charges.medications}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Lab:</h3>
+				<p class="left">
+					KES
+					${charges.lab}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>X-ray:</h3>
+				<p class="left">
+					KES
+					${charges.xray}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Supplies:</h3>
+				<p class="left">
+					KES
+					${charges.supplies}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>File:</h3>
+				<p class="left">
+					KES
+					${charges.file}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Follow-up:</h3>
+				<p class="left">
+					KES
+					${charges.followUp}
+				</p>
+			</fieldset>
+		</section>
+	</div>
 </div>
 
 <div>
-    <p>
-        <a href="${ ui.pageLink("bkkh", "payment", [ chargesId: charges.id, patientId: patient.uuid ]) }">Add Charges</a>
-    </p>
+	<p>
+		<a
+			href="${ ui.pageLink("bkkh", "payment", [ chargesId: charges.id, patientId: patient.uuid ]) }">Add
+			Charges</a>
+	</p>
 </div>
 
 <table>
-    <thead>
-        <th>Payment Date</th>
-        <th>Amount</th>
-        <th>Method</th>
-        <th>Account Charged</th>
-    </thead>
-    <tbody>
-    <% charges.payments.each { payment -> %>
+	<thead>
+		<tr>
+			<th>Payment Date</th>
+			<th>Amount</th>
+			<th>Method</th>
+			<th>Account Charged</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% charges.payments.each { payment -> %>
         <tr>
             <td>${payment.paymentDate}</td>
             <td>KES ${payment.paid}</td>
@@ -47,5 +111,5 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <td>${payment.accountCharged}</td>
         </tr>
     <% } %>
-    </tbody>
+	</tbody>
 </table>
