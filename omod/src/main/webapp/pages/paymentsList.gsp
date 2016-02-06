@@ -2,6 +2,7 @@
 <%
     import java.text.DecimalFormat
     def formatter = new DecimalFormat("#0.00")
+    ui.includeCss("bkkh", "bkkh.css");
     ui.decorateWith("appui", "standardEmrPage")
 %>
 
@@ -105,9 +106,3 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
     <% } %>
 	</tbody>
 </table>
-
-<style>
-.align-right {
-	text-align: right;
-}
-</style>

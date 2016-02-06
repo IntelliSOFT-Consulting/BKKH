@@ -1,6 +1,10 @@
 
 <%
-ui.decorateWith("appui", "standardEmrPage")
+    import java.text.DecimalFormat
+    def formatter = new DecimalFormat("#0.00")
+
+    ui.decorateWith("appui", "standardEmrPage")
+    ui.includeCss("bkkh", "bkkh.css");
 %>
 
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
@@ -25,9 +29,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 	<tbody>
 		<% chargesList.each { charges -> %>
 			<tr>
-				<td>KES ${charges.date}</td>
-				<td>KES ${charges.total}</td>
-				<td>KES ${charges.balance}</td>
+				<td>${charges.date != null ? ui.formatDatetimePretty(charges.date) : '--'}</td>
+				<td class="align-right">${formatter.format(charges.total)}</td>
+				<td class="align-right">${formatter.format(charges.balance)}</td>
 				<td>
 					<span><a href="#" class="details" title="View Charges"><i class="icon-arrow-down"></i></a></span>
 					<span><a href="${ui.pageLink("bkkh", "paymentsList", [ chargesId: charges.id, patientId: patient.uuid ]) }" title="View Payments"><i class="icon-list-ol"></i></a></span>
@@ -41,43 +45,43 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 							<section>
 								<fieldset>
 									<h3>Stay:</h3>
-									<p class="left">KES ${charges.stay}</p>
+									<p class="left">${formatter.format(charges.stay)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Procedure:</h3>
-									<p class="left">KES ${charges.procedure}</p>
+									<p class="left">${formatter.format(charges.procedure)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Anaesthesia: </h3>
-									<p class="left">KES ${charges.anaesthesia}</p>
+									<p class="left">${formatter.format(charges.anaesthesia)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Doctor: </h3>
-									<p class="left">KES ${charges.doctor}</p>
+									<p class="left">${formatter.format(charges.doctor)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Medication: </h3>
-									<p class="left">KES ${charges.medications}</p>
+									<p class="left">${formatter.format(charges.medications)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Lab: </h3>
-									<p class="left">KES ${charges.lab}</p>
+									<p class="left">${formatter.format(charges.lab)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>X-ray: </h3>
-									<p class="left">KES ${charges.xray}</p>
+									<p class="left">${formatter.format(charges.xray)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Supplies: </h3>
-									<p class="left">KES ${charges.supplies}</p>
+									<p class="left">${formatter.format(charges.supplies)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>File: </h3>
-									<p class="left">KES ${charges.file}</p>
+									<p class="left">${formatter.format(charges.file)}</p>
 								</fieldset>
 								<fieldset>
 									<h3>Follow-up: </h3>
-									<p class="left">KES ${charges.followUp}</p>
+									<p class="left">${formatter.format(charges.followUp)}</p>
 								</fieldset>
 							</section>
 						</div>
