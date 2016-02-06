@@ -3,6 +3,7 @@ package org.openmrs.module.bkkh.api.db;
 import java.util.List;
 
 import org.openmrs.Patient;
+import org.openmrs.module.bkkh.ChargeAccount;
 import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.Payment;
 
@@ -19,4 +20,8 @@ public interface ChargesDAO {
     Charges getLastCharges(Patient patient);
 
 	Payment getPayment(Integer paymentId);
+
+	List<ChargeAccount> getChargeAccounts();
+
+	ChargeAccount getChargeAccount(Integer chargeAccountId);
 }

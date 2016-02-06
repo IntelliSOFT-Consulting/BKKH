@@ -96,4 +96,62 @@
         </modifySql>
     </changeSet>
     
+    <changeSet id="bkkh_charge_account_create_table" author="gwasilwa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="bkkh_charge_account"/>
+            </not>
+        </preConditions>
+
+        <comment >
+            Create table bkkh_charge_account, for storing charge accounts details
+        </comment>
+
+        <createTable tableName="bkkh_charge_account">
+
+            <column name="charge_account_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="uuid" type="char(38)" />
+
+            <column name="account_name" type="varchar(50)" />
+
+        </createTable>
+
+        <modifySql dbms="mssql">
+                <replace replace="CHAR(38)" with="UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID()" />
+        </modifySql>
+    </changeSet>
+    
+    <changeSet author="gwasilwa" id="modify_payment_table">
+        <comment >
+            Changed account charged to reference column pointing to charge_account
+        </comment>
+        <addColumn tableName="bkkh_payment">
+            <column name="charge_account_id" type="int"/>
+        </addColumn>
+        <dropColumn tableName="bkkh_payment" columnName="account_charged"/>
+        <addForeignKeyConstraint baseTableName="bkkh_payment" baseColumnNames="charge_account_id"
+                         constraintName="fk_charge_account"
+                         referencedTableName="bkkh_charge_account" referencedColumnNames="charge_account_id" />
+    </changeSet>
+    <changeSet author="gwasilwa" id="insert_charge_accounts">
+        <insert tableName="bkkh_charge_account">
+            <column name="account_name" value="Neuro"></column>
+            <column name="uuid" value="9738d659-ccf9-11e5-9255-34e6d77c15d6"></column>
+        </insert>
+        <insert tableName="bkkh_charge_account">
+            <column name="account_name" value="Pead Surg"></column>
+            <column name="uuid" value="6389d97d-ccf9-11e5-9255-34e6d77c15d6"></column>
+        </insert>
+        <insert tableName="bkkh_charge_account">
+            <column name="account_name" value="Smile Train"></column>
+            <column name="uuid" value="a3256f27-ccf9-11e5-9255-34e6d77c15d6"></column>
+        </insert>
+        <insert tableName="bkkh_charge_account">
+            <column name="account_name" value="Needy Fund"></column>
+            <column name="uuid" value="ae2d20c3-ccf9-11e5-9255-34e6d77c15d6"></column>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

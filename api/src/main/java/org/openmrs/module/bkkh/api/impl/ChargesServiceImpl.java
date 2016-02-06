@@ -1,6 +1,7 @@
 package org.openmrs.module.bkkh.api.impl;
 
 import org.openmrs.Patient;
+import org.openmrs.module.bkkh.ChargeAccount;
 import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.ChargesService;
@@ -41,5 +42,15 @@ public class ChargesServiceImpl implements ChargesService {
 	@Override
 	public Payment getPayment(Integer paymentId) {
 		return dao.getPayment(paymentId);
+	}
+
+	@Override
+	public List<ChargeAccount> getChargeAccounts() {
+		return dao.getChargeAccounts();
+	}
+
+	@Override
+	public ChargeAccount getChargeAccount(Integer chargeAccountId) {
+		return dao.getChargeAccount(chargeAccountId);
 	}
 }

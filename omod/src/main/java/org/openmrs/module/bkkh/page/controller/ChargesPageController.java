@@ -27,18 +27,21 @@ public class ChargesPageController {
             (
                     @RequestParam("patientId") Patient patient,
                     PageModel model,
-                    @InjectBeans PatientDomainWrapper patientDomainWrapper
+                    @InjectBeans PatientDomainWrapper patientDomainWrapper,
+                    @SpringBean("chargesService") ChargesService chargesService
             ) {
         patientDomainWrapper.setPatient(patient);
         model.addAttribute("patient", patientDomainWrapper);
         model.addAttribute("modeOfPayment", ModeOfPayment.values());
+        model.addAttribute("chargeAccounts", chargesService.getChargeAccounts());
         Charges costs = new Charges();
-		model.addAttribute("charges", costs);
+        model.addAttribute("charges", costs);
     }
 
     public String post
             (
                     @RequestParam("patientId") Patient patient,
+                    @RequestParam(value = "accountCharged", required = false) Integer chargeAccountId,
                     @BindParams("charges") Charges charges,
                     @BindParams("payment") Payment payment,
                     PageModel model,
@@ -50,6 +53,9 @@ public class ChargesPageController {
         charges.setDate(new Date());
         charges.setPatient(patient);
         payment.setCharges(charges);
+        if (chargeAccountId != null) {
+            payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+        }
         charges.addPayment(payment);
         chargesService.saveCharges(charges);
         

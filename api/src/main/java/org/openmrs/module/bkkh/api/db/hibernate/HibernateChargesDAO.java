@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
+import org.openmrs.module.bkkh.ChargeAccount;
 import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.db.ChargesDAO;
@@ -63,5 +64,19 @@ public class HibernateChargesDAO implements ChargesDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Payment.class);
 		criteria.add(Restrictions.eq("paymentId", paymentId));
 		return (Payment) criteria.list().get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ChargeAccount> getChargeAccounts() {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ChargeAccount.class);
+		return criteria.list();
+	}
+
+	@Override
+	public ChargeAccount getChargeAccount(Integer chargeAccountId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ChargeAccount.class);
+		criteria.add(Restrictions.eq("id", chargeAccountId));
+		return (ChargeAccount) criteria.list().get(0);
 	}
 }

@@ -52,13 +52,16 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <label for="balance">Balance</label>
             <span id="balance">${formatter.format(charges.balance)}</span>
         </p>
-        ${ ui.includeFragment("uicommons", "field/text", [
-            label: "Account Charged",
-            id:"account",
-            formFieldName: "accountCharged",
-            initialValue: payment.accountCharged,
-            classes: ["costs"]
-        ])}
+        <p>
+            <label for="accountCharged">Account Charged</label>
+            <select id="accountCharged" name="accountCharged">
+                <option></option>
+                <% chargeAccounts.each { account -> %>
+                    <option value="${account.id}" >${account.accountName}</option>
+                <% } %>
+            </select>
+            <span class="error"></span>
+        </p>
         <input type="submit" value="Save"/>
     </fieldset>
 </form>

@@ -1,6 +1,5 @@
 package org.openmrs.module.bkkh.page.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,12 +31,14 @@ public class PaymentPageController {
 		model.addAttribute("patient", patient);
 		model.addAttribute("payment", payment);
 		model.addAttribute("charges", chargesService.getCharges(chargesId));
+		model.addAttribute("chargeAccounts", chargesService.getChargeAccounts());
 		model.addAttribute("modeOfPayment", ModeOfPayment.values());
 	}
 	
 	public String post(
 			@RequestParam("chargesId") Integer chargesId,
 			@RequestParam(value = "paymentId", required = false) Integer paymentId,
+			@RequestParam(value = "accountCharged", required = false) Integer chargeAccountId,
 			@BindParams Payment payment,
 			@SpringBean("chargesService") ChargesService chargesService,
 			UiUtils ui) {
@@ -45,12 +46,12 @@ public class PaymentPageController {
 		if (paymentId != null) {
 			Payment oldPayment = chargesService.getPayment(paymentId);
 			oldPayment.setPaid(payment.getPaid());
-			oldPayment.setAccountCharged(payment.getAccountCharged());
+			oldPayment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
 			oldPayment.setModeOfPayment(payment.getModeOfPayment());
 			payment = oldPayment;
 		} else {
 			payment.setCharges(charges);
-			payment.setPaymentDate(new Date());
+			payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
 		}
 		charges.addPayment(payment);
 		chargesService.saveCharges(charges);

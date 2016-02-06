@@ -110,7 +110,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <td>${payment.paymentDate != null ? ui.formatDatetimePretty(payment.paymentDate) : '--' }</td>
             <td class="align-right">${formatter.format(payment.paid)}</td>
             <td>${payment.modeOfPayment}</td>
-            <td>${payment.accountCharged}</td>
+            <td>${ui.format(payment.chargeAccount?.accountName)}</td>
         </tr>
     <% } %>
 	</tbody>
