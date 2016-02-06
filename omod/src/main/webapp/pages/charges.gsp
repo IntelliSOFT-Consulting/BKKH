@@ -9,6 +9,15 @@
     ui.includeJavascript("uicommons", "navigator/exitHandlers.js", Integer.MAX_VALUE - 22);
 %>
 
+<script>
+var breadcrumbs = [
+    { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
+    { label: "${ ui.escapeJs(ui.format(patient.patient)) }", link: "${ ui.pageLink('coreapps', 'clinicianfacing/patient', [ patientId: patient.patient ]) }" },
+    { label: "${ ui.message('bkkh.charges.list') }", link: "${ ui.pageLink("bkkh", "chargesList", [patientId: patient.patient ]) }" },
+    { label: "${ ui.message('bkkh.charges') }", link: "${ ui.pageLink("bkkh", "charges") }" }
+];
+</script>
+
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
 <script>

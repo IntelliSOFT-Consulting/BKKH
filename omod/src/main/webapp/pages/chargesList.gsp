@@ -7,6 +7,14 @@
     ui.includeCss("bkkh", "bkkh.css");
 %>
 
+<script>
+var breadcrumbs = [
+    { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
+    { label: "${ ui.escapeJs(ui.format(patient)) }", link: "${ ui.pageLink('coreapps', 'clinicianfacing/patient', [ patientId: patient.uuid ]) }" },
+    { label: "${ ui.message("bkkh.charges.list") }", link: "${ ui.pageLink('bkkh', 'chargesList') }" }
+];
+</script>
+
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <div>

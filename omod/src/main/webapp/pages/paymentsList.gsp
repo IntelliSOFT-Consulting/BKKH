@@ -6,6 +6,15 @@
     ui.decorateWith("appui", "standardEmrPage")
 %>
 
+<script>
+var breadcrumbs = [
+    { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
+    { label: "${ ui.escapeJs(ui.format(patient)) }", link: "${ ui.pageLink('coreapps', 'clinicianfacing/patient', [ patientId: patient ]) }" },
+    { label: "${ ui.message('bkkh.charges.list') }", link: "${ ui.pageLink("bkkh", "chargesList", [patientId: patient]) }" },
+    { label: "${ ui.message('bkkh.payments') }", link: "${ ui.pageLink('bkkh', 'paymentsList') }" }
+];
+</script>
+
 ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <div class="dashboard">
