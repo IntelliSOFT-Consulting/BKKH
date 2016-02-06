@@ -1,5 +1,7 @@
 
 <%
+    import java.text.DecimalFormat
+    def formatter = new DecimalFormat("#0.00")
     ui.decorateWith("appui", "standardEmrPage")
 %>
 
@@ -14,71 +16,61 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 			<fieldset>
 				<h3>Stay:</h3>
 				<p class="left">
-					KES
-					${charges.stay}
+					${formatter.format(charges.stay)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Procedure:</h3>
 				<p class="left">
-					KES
-					${charges.procedure}
+					${formatter.format(charges.procedure)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Anaesthesia:</h3>
 				<p class="left">
-					KES
-					${charges.anaesthesia}
+					${formatter.format(charges.anaesthesia)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Doctor:</h3>
 				<p class="left">
-					KES
-					${charges.doctor}
+					${formatter.format(charges.doctor)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Medication:</h3>
 				<p class="left">
-					KES
-					${charges.medications}
+					${formatter.format(charges.medications)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Lab:</h3>
 				<p class="left">
-					KES
-					${charges.lab}
+					${formatter.format(charges.lab)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>X-ray:</h3>
 				<p class="left">
-					KES
-					${charges.xray}
+					${formatter.format(charges.xray)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Supplies:</h3>
 				<p class="left">
-					KES
-					${charges.supplies}
+					${formatter.format(charges.supplies)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>File:</h3>
 				<p class="left">
-					KES
-					${charges.file}
+					${formatter.format(charges.file)}
 				</p>
 			</fieldset>
 			<fieldset>
 				<h3>Follow-up:</h3>
 				<p class="left">
-					KES
-					${charges.followUp}
+					${formatter.format(charges.followUp)}
 				</p>
 			</fieldset>
 		</section>
@@ -105,11 +97,17 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 	<tbody>
 		<% charges.payments.each { payment -> %>
         <tr>
-            <td>${payment.paymentDate}</td>
-            <td>KES ${payment.paid}</td>
+            <td>${payment.paymentDate != null ? ui.formatDatetimePretty(payment.paymentDate) : '--' }</td>
+            <td class="align-right">${formatter.format(payment.paid)}</td>
             <td>${payment.modeOfPayment}</td>
             <td>${payment.accountCharged}</td>
         </tr>
     <% } %>
 	</tbody>
 </table>
+
+<style>
+.align-right {
+	text-align: right;
+}
+</style>
