@@ -1,10 +1,15 @@
 package org.openmrs.module.bkkh.page.controller;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openmrs.Patient;
 import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.ModeOfPayment;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.ChargesService;
+import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
@@ -26,17 +31,32 @@ public class PaymentPageController {
 		
 		model.addAttribute("patient", patient);
 		model.addAttribute("payment", payment);
-		model.addAttribute("chargesId", chargesId);
+		model.addAttribute("charges", chargesService.getCharges(chargesId));
 		model.addAttribute("modeOfPayment", ModeOfPayment.values());
 	}
 	
-	public void post(
+	public String post(
 			@RequestParam("chargesId") Integer chargesId,
+			@RequestParam(value = "paymentId", required = false) Integer paymentId,
 			@BindParams Payment payment,
-			@SpringBean("chargesService") ChargesService chargesService) {
+			@SpringBean("chargesService") ChargesService chargesService,
+			UiUtils ui) {
 		Charges charges = chargesService.getCharges(chargesId);
-		payment.setCharges(charges);
+		if (paymentId != null) {
+			Payment oldPayment = chargesService.getPayment(paymentId);
+			oldPayment.setPaid(payment.getPaid());
+			oldPayment.setAccountCharged(payment.getAccountCharged());
+			oldPayment.setModeOfPayment(payment.getModeOfPayment());
+			payment = oldPayment;
+		} else {
+			payment.setCharges(charges);
+			payment.setPaymentDate(new Date());
+		}
 		charges.addPayment(payment);
 		chargesService.saveCharges(charges);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("patientId", charges.getPatient().getUuid());
+		String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesList", params);
+		return redirectUrl;
 	}
 }
