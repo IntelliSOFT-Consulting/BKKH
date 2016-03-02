@@ -46,12 +46,12 @@ public class PaymentPageController {
 		if (paymentId != null) {
 			Payment oldPayment = chargesService.getPayment(paymentId);
 			oldPayment.setPaid(payment.getPaid());
-			oldPayment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+			setChargeAccount(chargeAccountId, chargesService, oldPayment);
 			oldPayment.setModeOfPayment(payment.getModeOfPayment());
 			payment = oldPayment;
 		} else {
 			payment.setCharges(charges);
-			payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+			setChargeAccount(chargeAccountId, chargesService, payment);
 		}
 		charges.addPayment(payment);
 		chargesService.saveCharges(charges);
@@ -59,5 +59,12 @@ public class PaymentPageController {
 		params.put("patientId", charges.getPatient().getUuid());
 		String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesList", params);
 		return redirectUrl;
+	}
+
+	private void setChargeAccount(Integer chargeAccountId,
+			ChargesService chargesService, Payment payment) {
+		if (chargeAccountId != null) {
+			payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+		}
 	}
 }

@@ -10,7 +10,7 @@
 var breadcrumbs = [
     { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
     { label: "${ ui.escapeJs(ui.format(patient)) }", link: "${ ui.pageLink('coreapps', 'clinicianfacing/patient', [ patientId: patient.uuid ]) }" },
-    { label: "${ ui.message('bkkh.charges.list') }", link: "${ ui.pageLink('bkkh', 'chargesList', [patient: patient]) }" },
+    { label: "${ ui.message('bkkh.charges.list') }", link: "${ ui.pageLink('bkkh', 'chargesList', [patientId: patient]) }" },
     { label: "${ ui.message('bkkh.payments') }", link: "${ ui.pageLink('bkkh', 'paymentsList', [patientId: patient, chargesId: charges.id]) }" },
     { label: "${ ui.message('bkkh.payment') }", link: "${ ui.pageLink('bkkh', 'payment') }" }
 ];
@@ -23,11 +23,6 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
         <input type="hidden" name="chargesId" value="${ charges.id }" >
         <input type="hidden" name="patientId" value="${ patient.uuid }" >
         <p>
-            <label for="total">Total</label>
-            <span id="total">${formatter.format(charges.total)}</span>
-            <span class="error"></span>
-        </p>
-        <p>
             <label for="mode-of-payment">Mode of Payment</label>
             <select id="mode-of-payment" name="modeOfPayment">
                 <% modeOfPayment.each { mode -> %>
@@ -37,23 +32,26 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <span class="error"></span>
         </p>
         <p>
-            ${ ui.includeFragment("uicommons", "field/text", [
-                label: "Cost Paid",
-                id: "paid",
-                formFieldName: "paid",
-                initialValue: formatter.format(payment.paid),
-                maxLength: 7,
-                min: 0,
-                max: 300000,
-                classes: ["costs", "numeric-range", "number"]
-            ])}
+            <label for="total">Total Charges</label>
+            <span id="total">${formatter.format(charges.total)}</span>
+            <span class="error"></span>
         </p>
+        ${ ui.includeFragment("uicommons", "field/text", [
+            label: "Cost Paid by Patient",
+            id: "paid",
+            formFieldName: "paid",
+            initialValue: formatter.format(payment.paid),
+            maxLength: 7,
+            min: 0,
+            max: 2000000,
+            classes: ["costs", "numeric-range", "number"]
+        ])}
         <p>
             <label for="balance">Balance</label>
             <span id="balance">${formatter.format(charges.balance)}</span>
         </p>
         <p>
-            <label for="accountCharged">Account Charged</label>
+            <label for="accountCharged">Account Charged for Balance</label>
             <select id="accountCharged" name="accountCharged">
                 <option></option>
                 <% chargeAccounts.each { account -> %>

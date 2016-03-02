@@ -232,29 +232,29 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         </select>
                         <span class="error"></span>
                     </p>
-                    ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Cost Paid",
-                        id:"paid",
-                        formFieldName: "payment.paid",
-                        maxLength: 7,
-                        min: 0,
-                        max: 10000000,
-                        classes: ["costs", "numeric-range", "number"],
-                        left: false
-                    ])}
                     <p>
-                        <label for="total">Total</label>
+                        <label for="total">Total Charges</label>
                         <input id="total" type="hidden" class="disabled" >
                         <span id="total-display">${formatter.format(charges.total)}</span>
                         <span class="error"></span>
                     </p>
+                    ${ ui.includeFragment("uicommons", "field/text", [
+                        label: "Cost Paid by Patient",
+                        id:"paid",
+                        formFieldName: "payment.paid",
+                        maxLength: 7,
+                        min: 0,
+                        max: 2000000,
+                        classes: ["costs", "numeric-range", "number"],
+                        left: false
+                    ])}
                     <p>
                         <label for="balance">Balance</label>
                         <input id="balance" type="hidden" class="disabled" >
                         <span id="balance-display">${formatter.format(charges.balance)}</span>
                     </p>
                     <p>
-                        <label for="accountCharged">Account Charged</label>
+                        <label for="accountCharged">Account Charged for Balance</label>
                         <select id="accountCharged" name="accountCharged">
                             <option></option>
                             <% chargeAccounts.each { account -> %>
