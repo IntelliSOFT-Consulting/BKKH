@@ -24,6 +24,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
 <script>
     var NavigatorController;
+
     function getFloatValue(source) {
         return isNaN(parseFloat(source)) ? 0 : parseFloat(source);
     }
@@ -32,6 +33,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
     emrMessages["numericRangeHigh"] = "value should be less than {0}";
     emrMessages["numericRangeLow"] = "value should be more than {0}";
+    emrMessages["numberField"] = "value should a number";
 
     jq(function(){
         NavigatorController = new KeyboardController();
@@ -53,6 +55,24 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
             var balance = (total - paid).toFixed(2);
             jq("#balance-display").html(balance);
             jq("#balance").val(balance);
+        });
+
+        togglePreviousButton();
+        jq("button.next").on("click", function (e){
+            e.preventDefault();
+            navigateToQuestion(1);
+        });
+
+        jq("button.previous").on("click", function(e){
+            e.preventDefault();
+            if (!jq(this).hasClass("disabled")) {
+                navigateToQuestion(-1);
+            }
+        });
+
+        jq("#stay-field").on("focus", function(e){
+            e.preventDefault();
+            togglePreviousButton();
         });
     });
     
@@ -89,6 +109,34 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
         var total = stay + procedure + anaesthesia + doctor + meds 
             + lab + xray + supplies + file + followUp;
         return total.toFixed(2);
+    }
+
+    function navigateToQuestion(step) {
+        var questions = NavigatorController.getQuestions();
+        var selectedQuestion = selectedModel(questions);
+        var selectedQuestionIndex = _.indexOf(questions, selectedQuestion);
+        var nextQuestion = questions[selectedQuestionIndex + step];
+        selectedQuestion.toggleSelection();
+        nextQuestion.toggleSelection();
+        selectedModel(selectedQuestion.fields) && selectedModel(selectedQuestion.fields).toggleSelection();
+        nextQuestion.fields[0] && nextQuestion.fields[0].toggleSelection();
+        if (selectedQuestion.parentSection != nextQuestion.parentSection) {
+            selectedQuestion.parentSection.toggleSelection();
+            nextQuestion.parentSection.toggleSelection();
+        }
+
+        togglePreviousButton();
+    }
+
+    function togglePreviousButton() {
+        var questions = NavigatorController.getQuestions();
+        var selectedQuestion = selectedModel(questions);
+        var selectedQuestionIndex = _.indexOf(questions, selectedQuestion);
+        if (selectedQuestionIndex == 0) {
+            jq("button.previous").addClass("disabled");
+        } else if (selectedQuestionIndex > 0) {
+            jq("button.previous").removeClass("disabled");
+        }
     }
 </script>
 
@@ -264,6 +312,15 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         <span class="error"></span>
                     </p>
                 </fieldset>
+                
+                <div style="margin-top: 10px;">
+                    <p style="display: inline">
+                        <button class="next confirm" style="float: right">Next</button>
+                    </p>
+                    <p style="display: inline">
+                        <button class="previous confirm">Previous</button>
+                    </p>
+                </div>
             </section>
             <div id="confirmation">
                 <span id="confirmation_label" class="title">Charges Summary</span>
