@@ -60,7 +60,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
         togglePreviousButton();
         jq("button.next").on("click", function (e){
             e.preventDefault();
-            navigateToQuestion(1);
+            if (!jq(this).hasClass("disabled")) {
+                navigateToQuestion(1);
+            }
         });
 
         jq("button.previous").on("click", function(e){
@@ -70,9 +72,13 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
             }
         });
 
-        jq("#stay-field").on("focus", function(e){
-            e.preventDefault();
+        jq("#stay-field").on("focus", function(){
             togglePreviousButton();
+        });
+
+        jq(":input").on("keyup", function(){
+            console.log("Input changed")
+            toggleNextButton();
         });
     });
     
@@ -116,6 +122,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
         var selectedQuestion = selectedModel(questions);
         var selectedQuestionIndex = _.indexOf(questions, selectedQuestion);
         var nextQuestion = questions[selectedQuestionIndex + step];
+
         selectedQuestion.toggleSelection();
         nextQuestion.toggleSelection();
         selectedModel(selectedQuestion.fields) && selectedModel(selectedQuestion.fields).toggleSelection();
@@ -136,6 +143,16 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
             jq("button.previous").addClass("disabled");
         } else if (selectedQuestionIndex > 0) {
             jq("button.previous").removeClass("disabled");
+        }
+    }
+
+    function toggleNextButton() {
+    	var questions = NavigatorController.getQuestions();
+        var selectedQuestion = selectedModel(questions);
+        if (!selectedQuestion.isValid()) {
+            jq("button.next").addClass("disabled");
+        } else {
+            jq("button.next").removeClass("disabled");
         }
     }
 </script>
