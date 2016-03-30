@@ -23,6 +23,15 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
         <input type="hidden" name="chargesId" value="${ charges.id }" >
         <input type="hidden" name="patientId" value="${ patient.uuid }" >
         <p>
+            <label for="total">Total Charges</label>
+            <span id="total">${formatter.format(charges.total)}</span>
+            <span class="error"></span>
+        </p>
+        <p>
+            <label for="balance">Balance</label>
+            <span id="balance">${formatter.format(charges.balance)}</span>
+        </p>
+        <p>
             <label for="mode-of-payment">Mode of Payment</label>
             <select id="mode-of-payment" name="modeOfPayment">
                 <% modeOfPayment.each { mode -> %>
@@ -31,13 +40,8 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             </select>
             <span class="error"></span>
         </p>
-        <p>
-            <label for="total">Total Charges</label>
-            <span id="total">${formatter.format(charges.total)}</span>
-            <span class="error"></span>
-        </p>
         ${ ui.includeFragment("uicommons", "field/text", [
-            label: "Cost Paid by Patient",
+            label: "Cost Paid",
             id: "paid",
             formFieldName: "paid",
             initialValue: formatter.format(payment.paid),
@@ -46,10 +50,6 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             max: 2000000,
             classes: ["costs", "numeric-range", "number"]
         ])}
-        <p>
-            <label for="balance">Balance</label>
-            <span id="balance">${formatter.format(charges.balance)}</span>
-        </p>
         <p>
             <label for="accountCharged">Account Charged for Balance</label>
             <select id="accountCharged" name="accountCharged">
