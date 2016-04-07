@@ -83,6 +83,18 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 					${formatter.format(charges.followUp)}
 				</p>
 			</fieldset>
+			<fieldset>
+				<h3>Total:</h3>
+				<p class="left">
+					${formatter.format(charges.total)}
+				</p>
+			</fieldset>
+			<fieldset>
+				<h3>Balance:</h3>
+				<p class="left">
+					${formatter.format(charges.balance)}
+				</p>
+			</fieldset>
 		</section>
 	</div>
 </div>

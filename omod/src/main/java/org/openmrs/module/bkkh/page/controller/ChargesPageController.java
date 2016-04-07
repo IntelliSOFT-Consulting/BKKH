@@ -64,7 +64,8 @@ public class ChargesPageController {
         
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("patientId", patient.getUuid());
-        String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesList", params);
+        params.put("chargesId", charges.getId());
+        String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "paymentsList", params);
 		return redirectUrl;
     }
 }

@@ -41,7 +41,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <span class="error"></span>
         </p>
         ${ ui.includeFragment("uicommons", "field/text", [
-            label: "Cost Paid",
+            label: "Amount Paid",
             id: "paid",
             formFieldName: "paid",
             initialValue: formatter.format(payment.paid),
