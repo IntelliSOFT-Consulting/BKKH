@@ -37,14 +37,13 @@ public class PaymentPageController {
 	
 	public String post(
 			@RequestParam("chargesId") Integer chargesId,
-			@RequestParam(value = "paymentId", required = false) Integer paymentId,
 			@RequestParam(value = "accountCharged", required = false) Integer chargeAccountId,
 			@BindParams Payment payment,
 			@SpringBean("chargesService") ChargesService chargesService,
 			UiUtils ui) {
 		Charges charges = chargesService.getCharges(chargesId);
-		if (paymentId != null) {
-			Payment oldPayment = chargesService.getPayment(paymentId);
+		if (payment.getId() != null) {
+			Payment oldPayment = chargesService.getPayment(payment.getId());
 			oldPayment.setPaid(payment.getPaid());
 			setChargeAccount(chargeAccountId, chargesService, oldPayment);
 			oldPayment.setModeOfPayment(payment.getModeOfPayment());

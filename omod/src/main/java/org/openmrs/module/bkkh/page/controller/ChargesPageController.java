@@ -26,6 +26,7 @@ public class ChargesPageController {
     public void get
             (
                     @RequestParam("patientId") Patient patient,
+                    @RequestParam(value = "chargesId", required = false) Integer chargesId,
                     PageModel model,
                     @InjectBeans PatientDomainWrapper patientDomainWrapper,
                     @SpringBean("chargesService") ChargesService chargesService
@@ -34,7 +35,12 @@ public class ChargesPageController {
         model.addAttribute("patient", patientDomainWrapper);
         model.addAttribute("modeOfPayment", ModeOfPayment.values());
         model.addAttribute("chargeAccounts", chargesService.getChargeAccounts());
-        Charges costs = new Charges();
+        Charges costs = null;
+        if (chargesId != null) {
+            costs = chargesService.getCharges(chargesId);
+        } else {
+            costs = new Charges();
+        }
         model.addAttribute("charges", costs);
     }
 

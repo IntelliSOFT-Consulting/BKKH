@@ -21,6 +21,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 <form method="post">
     <fieldset>
         <input type="hidden" name="chargesId" value="${ charges.id }" >
+        <input type="hidden" name="id" value="${ payment.id ?: "" }" >
         <input type="hidden" name="patientId" value="${ patient.uuid }" >
         <p>
             <label for="total">Total Charges</label>
@@ -35,7 +36,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <label for="mode-of-payment">Mode of Payment</label>
             <select id="mode-of-payment" name="modeOfPayment">
                 <% modeOfPayment.each { mode -> %>
-                    <option value="${mode.toString()}" <% if (charges.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
+                    <option value="${mode.toString()}" <% if (payment.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
                 <% } %>
             </select>
             <span class="error"></span>

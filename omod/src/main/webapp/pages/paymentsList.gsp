@@ -19,7 +19,14 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 
 <div class="dashboard">
 	<div class="info-header">
-		<h3>Charges</h3>
+		<h3>
+			Charges 
+			<span>
+				<small>
+					<a href="${ui.pageLink("bkkh", "charges", [patientId: patient, chargesId: charges.id])}">(Edit)</a>
+				</small>
+			</span>
+		</h3>
 	</div>
 	<div class="info-body">
 		<section>
