@@ -37,11 +37,20 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
 
     jq(function(){
         NavigatorController = new KeyboardController();
+
+        function updateCharges() {
+            var total = calculateTotal();
+            var paid = getFloatValue(jq("#paid-field").val());
+            var balance = (total - paid).toFixed(2);
+            jq("#total-display").html(total);
+            jq("#total").val(total);
+            jq("#balance-display").html(balance);
+            jq("#balance").val(balance);
+        }
+
         jq(".costs").on("change", function(){
             if (isValidNumber(this) && isNumberWithinRange(this)) {
-                var total = calculateTotal();
-                jq("#total-display").html(total);
-                jq("#total").val(total)
+                updateCharges();
             }
             else {
                 jq(this).focus();
@@ -80,6 +89,8 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
             console.log("Input changed")
             toggleNextButton();
         });
+
+        updateCharges();
     });
     
     function isValidNumber(charge) {
@@ -170,7 +181,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
         <form class="simple-form-ui" id="charges" method="post">
             <section id="charges-info">
                 <span class="title">Charges/Payments</span>
-                <input type="hidden" id="patientId" value="${patient.patient.patientId}"/>
+                <input type="hidden" name="charges.id" value="${charges.id ?: ""}" >
+                <input type="hidden" name="payment.id" value="${charges.payments.toList()[0]?.id ?: ""}" >
+                <input type="hidden" id="patientId" value="${patient.patient.patientId}" >
                 <fieldset class="no-confirmation">
                     <legend>Charges</legend>
                     <div>
@@ -286,7 +299,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         ])}
                     </div>
                 </fieldset>
-                <fieldset display-template="&lt;p&gt;Total: {{field.[2]}}&lt;/p&gt; &lt;p&gt; Paid: {{field.[1]}}&lt;/p&gt; &lt;p&gt; Balance: {{field.[3]}}&lt;/p&gt;" >
+                <fieldset display-template="&lt;p&gt;Total: {{field.[1]}}&lt;/p&gt; &lt;p&gt; Paid: {{field.[2]}}&lt;/p&gt; &lt;p&gt; Balance: {{field.[3]}}&lt;/p&gt;" >
                     <legend>Payment</legend>
                     <p>
                         <label for="modeOfPayment">Mode of Payment</label>
@@ -304,8 +317,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         <span class="error"></span>
                     </p>
                     ${ ui.includeFragment("uicommons", "field/text", [
-                        label: "Cost Paid by Patient",
+                        label: "Amount Paid",
                         id:"paid",
+                        initialValue: formatter.format(charges.payments.toList()[0]?.paid ?: 0),
                         formFieldName: "payment.paid",
                         maxLength: 7,
                         min: 0,
@@ -323,7 +337,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         <select id="accountCharged" name="accountCharged">
                             <option></option>
                             <% chargeAccounts.each { account -> %>
-                                <option value="${account.id}" >${account.accountName}</option>
+                                <option value="${account.id}" <% if (charges.payments.toList()[0]?.chargeAccount == account) { %> selected <% } %> >${account.accountName}</option>
                             <% } %>
                         </select>
                         <span class="error"></span>

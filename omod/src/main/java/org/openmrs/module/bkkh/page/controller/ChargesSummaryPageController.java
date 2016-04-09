@@ -7,7 +7,7 @@ import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public class PaymentsListPageController {
+public class ChargesSummaryPageController {
 	public void get(
 			@RequestParam("chargesId") Integer chargesId,
 			@RequestParam("patientId") Patient patient,

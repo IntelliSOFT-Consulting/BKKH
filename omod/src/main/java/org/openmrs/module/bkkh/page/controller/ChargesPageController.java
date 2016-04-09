@@ -26,6 +26,7 @@ public class ChargesPageController {
     public void get
             (
                     @RequestParam("patientId") Patient patient,
+                    @RequestParam(value = "chargesId", required = false) Integer chargesId,
                     PageModel model,
                     @InjectBeans PatientDomainWrapper patientDomainWrapper,
                     @SpringBean("chargesService") ChargesService chargesService
@@ -34,7 +35,12 @@ public class ChargesPageController {
         model.addAttribute("patient", patientDomainWrapper);
         model.addAttribute("modeOfPayment", ModeOfPayment.values());
         model.addAttribute("chargeAccounts", chargesService.getChargeAccounts());
-        Charges costs = new Charges();
+        Charges costs = null;
+        if (chargesId != null) {
+            costs = chargesService.getCharges(chargesId);
+        } else {
+            costs = new Charges();
+        }
         model.addAttribute("charges", costs);
     }
 
@@ -64,7 +70,8 @@ public class ChargesPageController {
         
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("patientId", patient.getUuid());
-        String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesList", params);
+        params.put("chargesId", charges.getId());
+        String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesSummary", params);
 		return redirectUrl;
     }
 }
