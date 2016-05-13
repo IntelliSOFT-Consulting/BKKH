@@ -3,6 +3,7 @@ package org.openmrs.module.bkkh;
 import java.util.Date;
 
 import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.Visit;
 
 public class Payment extends BaseOpenmrsObject {
 
@@ -13,6 +14,7 @@ public class Payment extends BaseOpenmrsObject {
 	private ChargeAccount chargeAccount;
 	private ModeOfPayment modeOfPayment;
 	private Charges charges;
+	private Visit visit;
 
 	public Integer getId() {
 		return getPaymentId();
@@ -76,6 +78,14 @@ public class Payment extends BaseOpenmrsObject {
 
 	public void setCharges(Charges charges) {
 		this.charges = charges;
+	}
+
+	public Visit getVisit() {
+		return visit;
+	}
+
+	public void setVisit(Visit visit) {
+		this.visit = visit;
 	}
 
 }

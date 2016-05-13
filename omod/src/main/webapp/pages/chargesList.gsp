@@ -43,7 +43,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 				<td>
 					<span><a href="#" class="details" title="View Charges"><i class="icon-arrow-down"></i></a></span>
 					<span><a href="${ui.pageLink("bkkh", "chargesSummary", [ chargesId: charges.id, patientId: patient.uuid ]) }" title="View Charges Details"><i class="icon-external-link"></i></a></span>
-					<span><a href="${ui.pageLink("bkkh", "payment", [ chargesId: charges.id, patientId: patient.uuid ]) }" title="Record Payment"><i class="icon-pencil"></i></a></span>
+					<span><a href="${ui.pageLink("bkkh", "payment", [ chargesId: charges.id, patientId: patient.uuid ]) }" title="Record Payment"><i class="icon-plus"></i></a></span>
 				</td>
 			</tr>
 			<tr class="details-view">

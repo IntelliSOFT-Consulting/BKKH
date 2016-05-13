@@ -33,6 +33,14 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             <span id="balance">${formatter.format(charges.balance)}</span>
         </p>
         <p>
+            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                label: "Payment Date",
+                id:"dateCharge",
+                formFieldName: "paymentDate",
+                useTime: false
+             ])}
+        </p>
+        <p>
             <label for="mode-of-payment">Mode of Payment</label>
             <select id="mode-of-payment" name="modeOfPayment">
                 <% modeOfPayment.each { mode -> %>
