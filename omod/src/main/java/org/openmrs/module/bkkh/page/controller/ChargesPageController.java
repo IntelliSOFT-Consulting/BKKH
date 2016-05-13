@@ -1,20 +1,24 @@
 package org.openmrs.module.bkkh.page.controller;
 
 import org.openmrs.Patient;
+import org.openmrs.Visit;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.ModeOfPayment;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.ChargesService;
+import org.openmrs.module.emrapi.adt.AdtService;
 import org.openmrs.module.emrapi.patient.PatientDomainWrapper;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.annotation.InjectBeans;
 import org.openmrs.ui.framework.annotation.SpringBean;
 import org.openmrs.ui.framework.page.PageModel;
-import org.springframework.validation.BindingResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +26,7 @@ import java.util.Map;
  * Created by gitahi on 24/11/15.
  */
 public class ChargesPageController {
+    protected Logger log = LoggerFactory.getLogger(ChargesPageController.class);
 
     public void get
             (
@@ -54,13 +59,19 @@ public class ChargesPageController {
                     @InjectBeans PatientDomainWrapper patientDomainWrapper,
                     @SpringBean("chargesService") ChargesService chargesService,
                     UiUtils ui,
-                    BindingResult bindingResult
+                    UiSessionContext session
             ) {
-        charges.setDate(new Date());
         charges.setPatient(patient);
+        charges.setDate(payment.getPaymentDate());
         payment.setCharges(charges);
         if (chargeAccountId != null) {
             payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+        }
+        try {
+            Visit visit = Context.getService(AdtService.class).ensureVisit(patient, payment.getPaymentDate(), session.getSessionLocation());
+            payment.setVisit(visit);
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
         }
         charges.addPayment(payment);
         chargesService.saveCharges(charges);

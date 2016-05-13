@@ -20,5 +20,6 @@
             </type>
         </property>
         <many-to-one name="charges" class="org.openmrs.module.bkkh.Charges" column="charges_id" not-null="true" />
+        <many-to-one name="visit" class="org.openmrs.Visit" column="visit_id" not-null="false" />
     </class>
 </hibernate-mapping>

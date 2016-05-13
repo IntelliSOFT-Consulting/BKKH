@@ -311,6 +311,14 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         <span class="error"></span>
                     </p>
                     <p>
+                        ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                            label: "Payment Date",
+                            id:"dateCharge",
+                            formFieldName: "payment.paymentDate",
+                            useTime: false
+                         ])}
+                    </p>
+                    <p>
                         <label for="total">Total Charges</label>
                         <input id="total" type="hidden" class="disabled" >
                         <span id="total-display">${formatter.format(charges.total)}</span>

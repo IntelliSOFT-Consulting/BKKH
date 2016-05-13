@@ -154,4 +154,15 @@
             <column name="uuid" value="ae2d20c3-ccf9-11e5-9255-34e6d77c15d6"></column>
         </insert>
     </changeSet>
+    <changeSet author="gwasilwa" id="link_payment_to_visit">
+        <comment >
+            Add link to visit
+        </comment>
+        <addColumn tableName="bkkh_payment">
+            <column name="visit_id" type="int"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="bkkh_payment" baseColumnNames="visit_id"
+                         constraintName="fk_visit_payment"
+                         referencedTableName="visit" referencedColumnNames="visit_id" />
+    </changeSet>
 </databaseChangeLog>
