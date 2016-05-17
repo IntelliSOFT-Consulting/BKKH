@@ -37,14 +37,15 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
                 label: "Payment Date",
                 id:"dateCharge",
                 formFieldName: "paymentDate",
-                useTime: false
+                useTime: false,
+                defaultDate: payment.paymentDate
              ])}
         </p>
         <p>
             <label for="mode-of-payment">Mode of Payment</label>
-            <select id="mode-of-payment" name="modeOfPayment">
+            <select id="mode-of-payment" name="paymentMode">
                 <% modeOfPayment.each { mode -> %>
-                    <option value="${mode.toString()}" <% if (payment.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
+                    <option value="${mode.id}" <% if (charges.payments.toList()[0]?.modeOfPayment == mode) { %> selected <% } %> >${mode.modeOfPayment}</option>
                 <% } %>
             </select>
             <span class="error"></span>
@@ -60,7 +61,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
             classes: ["costs", "numeric-range", "number"]
         ])}
         <p>
-            <label for="accountCharged">Account Charged for Balance</label>
+            <label for="accountCharged">BK Account Charged</label>
             <select id="accountCharged" name="accountCharged">
                 <option></option>
                 <% chargeAccounts.each { account -> %>

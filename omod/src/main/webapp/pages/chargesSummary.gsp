@@ -135,7 +135,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
         <tr>
             <td>${payment.paymentDate != null ? ui.formatDatetimePretty(payment.paymentDate) : '--' }</td>
             <td class="align-right">${formatter.format(payment.paid)}</td>
-            <td>${ui.message(payment.modeOfPayment.messageKey)}</td>
+            <td>${ui.format(payment.modeOfPayment.modeOfPayment)}</td>
             <td>${ui.format(payment.chargeAccount?.accountName)}</td>
             <td><a href="${ui.pageLink("bkkh", "payment", [ chargesId: charges.id, patientId: patient.uuid, paymentId: payment.id ]) }" title="Edit Payment"><i class="icon-edit"></i></a></td>
         </tr>

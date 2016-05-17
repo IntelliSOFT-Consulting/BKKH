@@ -5,6 +5,7 @@ import java.util.List;
 import org.openmrs.Patient;
 import org.openmrs.module.bkkh.ChargeAccount;
 import org.openmrs.module.bkkh.Charges;
+import org.openmrs.module.bkkh.ModeOfPayment;
 import org.openmrs.module.bkkh.Payment;
 
 /**
@@ -24,4 +25,8 @@ public interface ChargesDAO {
 	List<ChargeAccount> getChargeAccounts();
 
 	ChargeAccount getChargeAccount(Integer chargeAccountId);
+
+	List<ModeOfPayment> getModeOfPayments();
+
+	ModeOfPayment getModeOfPayment(Integer modeOfPaymentId);
 }

@@ -1,21 +1,31 @@
 package org.openmrs.module.bkkh;
 
-public enum ModeOfPayment {
-	
-	NHIF("bkkh.nhif"),
-	INDIVIDUAL("bkkh.individual"),
-	GOVTSPONSORED("bkkh.govtsponsored"),
-	NGOSPONSORED("bkkh.ngosponsored"),
-	INSURANCE("bkkh.insurance");
-	
-	private String messageKey;
-	
-	public String getMessageKey() {
-		return messageKey;
-	}
-	
-	private ModeOfPayment(String key) {
-		this.messageKey = key;
+public class ModeOfPayment {
+	private Integer id;
+	private String modeOfPayment;
+	private String uuid;
+
+	public Integer getId() {
+		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getModeOfPayment() {
+		return modeOfPayment;
+	}
+
+	public void setModeOfPayment(String modeOfPayment) {
+		this.modeOfPayment = modeOfPayment;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 }

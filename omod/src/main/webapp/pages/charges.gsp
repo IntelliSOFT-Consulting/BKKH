@@ -303,9 +303,9 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <legend>Payment</legend>
                     <p>
                         <label for="modeOfPayment">Mode of Payment</label>
-                        <select id="modeOfPayment" name="payment.modeOfPayment">
+                        <select id="modeOfPayment" name="modeOfPayment">
                         <% modeOfPayment.each { mode -> %>
-                            <option value="${mode.toString()}" <% if (charges.payments.toList()[0]?.modeOfPayment == mode) { %> selected <% } %> >${ui.message(mode.messageKey)}</option>
+                            <option value="${mode.id}" <% if (charges.payments.toList()[0]?.modeOfPayment == mode) { %> selected <% } %> >${mode.modeOfPayment}</option>
                         <% } %>
                         </select>
                         <span class="error"></span>
@@ -341,7 +341,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         <span id="balance-display">${formatter.format(charges.balance)}</span>
                     </p>
                     <p>
-                        <label for="accountCharged">Account Charged for Balance</label>
+                        <label for="accountCharged">BK Account Charged</label>
                         <select id="accountCharged" name="accountCharged">
                             <option></option>
                             <% chargeAccounts.each { account -> %>
