@@ -52,6 +52,7 @@
         Charges.hbm.xml
         Payment.hbm.xml
         ChargeAccount.hbm.xml
+        ModeOfPayment.hbm.xml
 
     </mappingFiles>
 

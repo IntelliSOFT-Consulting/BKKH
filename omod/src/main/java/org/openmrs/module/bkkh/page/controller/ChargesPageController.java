@@ -5,7 +5,6 @@ import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.bkkh.Charges;
-import org.openmrs.module.bkkh.ModeOfPayment;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.ChargesService;
 import org.openmrs.module.emrapi.adt.AdtService;
@@ -38,7 +37,7 @@ public class ChargesPageController {
             ) {
         patientDomainWrapper.setPatient(patient);
         model.addAttribute("patient", patientDomainWrapper);
-        model.addAttribute("modeOfPayment", ModeOfPayment.values());
+        model.addAttribute("modeOfPayment", chargesService.getModeOfPayments());
         model.addAttribute("chargeAccounts", chargesService.getChargeAccounts());
         Charges costs = null;
         if (chargesId != null) {
@@ -53,6 +52,7 @@ public class ChargesPageController {
             (
                     @RequestParam("patientId") Patient patient,
                     @RequestParam(value = "accountCharged", required = false) Integer chargeAccountId,
+                    @RequestParam(value = "modeOfPayment", required = false) Integer modeOfPaymentId,
                     @BindParams("charges") Charges charges,
                     @BindParams("payment") Payment payment,
                     PageModel model,
@@ -66,6 +66,9 @@ public class ChargesPageController {
         payment.setCharges(charges);
         if (chargeAccountId != null) {
             payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+        }
+        if (modeOfPaymentId != null) {
+        	payment.setModeOfPayment(chargesService.getModeOfPayment(modeOfPaymentId));
         }
         try {
             Visit visit = Context.getService(AdtService.class).ensureVisit(patient, payment.getPaymentDate(), session.getSessionLocation());
@@ -83,6 +86,6 @@ public class ChargesPageController {
         params.put("patientId", patient.getUuid());
         params.put("chargesId", charges.getId());
         String redirectUrl = "redirect:" + ui.pageLinkWithoutContextPath("bkkh", "chargesSummary", params);
-		return redirectUrl;
+        return redirectUrl;
     }
 }

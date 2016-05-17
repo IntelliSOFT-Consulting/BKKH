@@ -8,7 +8,6 @@ import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.bkkh.Charges;
-import org.openmrs.module.bkkh.ModeOfPayment;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.ChargesService;
 import org.openmrs.module.emrapi.adt.AdtService;
@@ -39,12 +38,13 @@ public class PaymentPageController {
 		model.addAttribute("payment", payment);
 		model.addAttribute("charges", chargesService.getCharges(chargesId));
 		model.addAttribute("chargeAccounts", chargesService.getChargeAccounts());
-		model.addAttribute("modeOfPayment", ModeOfPayment.values());
+		model.addAttribute("modeOfPayment", chargesService.getModeOfPayments());
 	}
 	
 	public String post(
 			@RequestParam("chargesId") Integer chargesId,
 			@RequestParam(value = "accountCharged", required = false) Integer chargeAccountId,
+			@RequestParam(value = "paymentMode", required = false) Integer modeOfPaymentId,
 			@BindParams Payment payment,
 			@SpringBean("chargesService") ChargesService chargesService,
 			UiSessionContext session,
@@ -53,12 +53,14 @@ public class PaymentPageController {
 		if (payment.getId() != null) {
 			Payment oldPayment = chargesService.getPayment(payment.getId());
 			oldPayment.setPaid(payment.getPaid());
+			oldPayment.setPaymentDate(payment.getPaymentDate());
 			setChargeAccount(chargeAccountId, chargesService, oldPayment);
-			oldPayment.setModeOfPayment(payment.getModeOfPayment());
+			setModeOfPayment(modeOfPaymentId, chargesService, oldPayment);
 			payment = oldPayment;
 		} else {
 			payment.setCharges(charges);
 			setChargeAccount(chargeAccountId, chargesService, payment);
+			setModeOfPayment(modeOfPaymentId, chargesService, payment);
 		}
 		try {
 			Visit visit = Context.getService(AdtService.class).ensureVisit(
@@ -81,6 +83,12 @@ public class PaymentPageController {
 			ChargesService chargesService, Payment payment) {
 		if (chargeAccountId != null) {
 			payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+		}
+	}
+	
+	private void setModeOfPayment(Integer modeOfPaymentId, ChargesService chargesService, Payment payment) {
+		if (modeOfPaymentId != null) {
+			payment.setModeOfPayment(chargesService.getModeOfPayment(modeOfPaymentId));
 		}
 	}
 }

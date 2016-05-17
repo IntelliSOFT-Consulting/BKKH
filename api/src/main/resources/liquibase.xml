@@ -165,4 +165,102 @@
                          constraintName="fk_visit_payment"
                          referencedTableName="visit" referencedColumnNames="visit_id" />
     </changeSet>
+    <changeSet author="gwasilwa" id="delete-needy-fund">
+        <comment>
+            Remove Needy Fund from list of charge accounts
+        </comment>
+        <delete tableName="bkkh_charge_account">
+            <where>uuid = 'ae2d20c3-ccf9-11e5-9255-34e6d77c15d6'</where>
+        </delete>
+    </changeSet>
+    <changeSet id="bkkh_mode_of_payment_create_table" author="gwasilwa">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="bkkh_mode_of_payment"/>
+            </not>
+        </preConditions>
+        <comment >
+            Create table bkkh_mode_of_payment, for storing mode of payments
+        </comment>
+        <createTable tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="uuid" type="char(38)" />
+            <column name="mode_of_payment" type="varchar(50)" />
+        </createTable>
+        <modifySql dbms="mssql">
+                <replace replace="CHAR(38)" with="UNIQUEIDENTIFIER NOT NULL DEFAULT NEWSEQUENTIALID()" />
+        </modifySql>
+    </changeSet>
+    <changeSet author="gwasilwa" id="insert_mode_of_payments">
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="1" />
+            <column name="mode_of_payment" value="NHIF"></column>
+            <column name="uuid" value="641ce260-ae9e-44c1-97dc-2de346336c44"></column>
+        </insert>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="2" />
+            <column name="mode_of_payment" value="Individual"></column>
+            <column name="uuid" value="3005764f-adf5-41f3-b677-ac85509f22b4"></column>
+        </insert>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="3" />
+            <column name="mode_of_payment" value="Government Sponsored"></column>
+            <column name="uuid" value="0171d260-26c8-4675-a152-5e4e1bc3af16"></column>
+        </insert>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="4" />
+            <column name="mode_of_payment" value="NGO Sponsored"></column>
+            <column name="uuid" value="2556a9a7-8e02-4363-b125-9adf1e13f02d"></column>
+        </insert>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="5" />
+            <column name="mode_of_payment" value="Insurance"></column>
+            <column name="uuid" value="929831a6-0061-4eaa-a742-05859577ee03"></column>
+        </insert>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="6" />
+            <column name="mode_of_payment" value="Needy Fund"></column>
+            <column name="uuid" value="ab386686-8a14-4303-bb74-af213b01660b"></column>
+        </insert>
+    </changeSet>
+    <changeSet author="gwasilwa" id="add_mode_of_payment_link">
+        <addColumn tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="bkkh_payment" baseColumnNames="mode_of_payment_id"
+                         constraintName="fk_mode_of_payment"
+                         referencedTableName="bkkh_mode_of_payment" referencedColumnNames="mode_of_payment_id" />
+    </changeSet>
+    <changeSet author="gwasilwa" id="update-bkkh-mode-of-payment-link">
+        <comment>
+            Update reference to bkkh_mode_of_payment table
+        </comment>
+        <update tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int" value="1"/>
+            <where>mode_of_payment LIKE 'NHIF'</where>
+        </update>
+        <update tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int" value="2"/>
+            <where>mode_of_payment LIKE 'INDIVIDUAL'</where>
+        </update>
+        <update tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int" value="3"/>
+            <where>mode_of_payment LIKE 'GOVTSPONSORED'</where>
+        </update>
+        <update tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int" value="4"/>
+            <where>mode_of_payment LIKE 'NGOSPONSORED'</where>
+        </update>
+        <update tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int" value="5"/>
+            <where>mode_of_payment LIKE 'INSURANCE'</where>
+        </update>
+        <update tableName="bkkh_payment">
+            <column name="mode_of_payment_id" type="int" value="6"/>
+            <where>mode_of_payment LIKE 'NEEDYFUND'</where>
+        </update>
+        <dropColumn tableName="bkkh_payment" columnName="mode_of_payment"/>
+    </changeSet>
 </databaseChangeLog>
