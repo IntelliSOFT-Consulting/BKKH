@@ -165,14 +165,6 @@
                          constraintName="fk_visit_payment"
                          referencedTableName="visit" referencedColumnNames="visit_id" />
     </changeSet>
-    <changeSet author="gwasilwa" id="delete-needy-fund">
-        <comment>
-            Remove Needy Fund from list of charge accounts
-        </comment>
-        <delete tableName="bkkh_charge_account">
-            <where>uuid = 'ae2d20c3-ccf9-11e5-9255-34e6d77c15d6'</where>
-        </delete>
-    </changeSet>
     <changeSet id="bkkh_mode_of_payment_create_table" author="gwasilwa">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -194,6 +186,9 @@
         </modifySql>
     </changeSet>
     <changeSet author="gwasilwa" id="insert_mode_of_payments">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from bkkh_mode_of_payment</sqlCheck>
+        </preConditions>
         <insert tableName="bkkh_mode_of_payment">
             <column name="mode_of_payment_id" value="1" />
             <column name="mode_of_payment" value="NHIF"></column>
@@ -259,8 +254,24 @@
         </update>
         <update tableName="bkkh_payment">
             <column name="mode_of_payment_id" type="int" value="6"/>
-            <where>mode_of_payment LIKE 'NEEDYFUND'</where>
+            <where>mode_of_payment LIKE 'NEEDYFUND' OR charge_account_id = (select charge_account_id from bkkh_charge_account where uuid = 'ae2d20c3-ccf9-11e5-9255-34e6d77c15d6')</where>
         </update>
         <dropColumn tableName="bkkh_payment" columnName="mode_of_payment"/>
+    </changeSet>
+    <changeSet author="gwasilwa" id="orphan-payments-linked-to-needy-fund-charge-account">
+        <comment>
+            Change payments linked to 'Needy Fund' charge account to null
+        </comment>
+        <sql>
+            update bkkh_payment set charge_account_id = NULL where charge_account_id = (select charge_account_id from bkkh_charge_account where uuid = 'ae2d20c3-ccf9-11e5-9255-34e6d77c15d6');
+        </sql>
+    </changeSet>
+    <changeSet author="gwasilwa" id="delete-needy-fund">
+        <comment>
+            Remove Needy Fund from list of charge accounts
+        </comment>
+        <delete tableName="bkkh_charge_account">
+            <where>uuid = 'ae2d20c3-ccf9-11e5-9255-34e6d77c15d6'</where>
+        </delete>
     </changeSet>
 </databaseChangeLog>
