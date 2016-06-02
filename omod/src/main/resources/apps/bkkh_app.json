@@ -1,0 +1,22 @@
+[
+  {
+    "id": "bkkh.finance.findPatient",
+    "instanceOf": "coreapps.template.findPatient",
+    "description": "Record patient charges and payment information",
+    "order": 100
+    "extensions": [
+        {
+            "id": "coreapps.activeVisitsHomepageLink",
+            "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+            "type": "link",
+            "label": "Manage Finance Records",
+            "url": "coreapps/findpatient/findPatient.page?app=bkkh.finance.findPatient",
+            "icon": "icon-book",
+            "requiredPrivilege": "App: bkkh.cashier"
+        }
+    ],
+    "config": {
+        "afterSelectedUrl": "/bkkh/chargesList.page?patientId={{ patientId }}"
+    }
+  }
+]
