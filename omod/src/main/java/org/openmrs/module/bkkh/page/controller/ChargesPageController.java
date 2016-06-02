@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,7 +72,12 @@ public class ChargesPageController {
         	payment.setModeOfPayment(chargesService.getModeOfPayment(modeOfPaymentId));
         }
         try {
-            Visit visit = Context.getService(AdtService.class).ensureVisit(patient, payment.getPaymentDate(), session.getSessionLocation());
+            Calendar endOfDay = Calendar.getInstance();
+            endOfDay.setTime(payment.getPaymentDate());
+            endOfDay.set(Calendar.HOUR_OF_DAY, 23);
+            endOfDay.set(Calendar.MINUTE, 59);
+            endOfDay.set(Calendar.SECOND, 59);
+            Visit visit = Context.getService(AdtService.class).ensureVisit(patient, endOfDay.getTime(), session.getSessionLocation());
             payment.setVisit(visit);
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());

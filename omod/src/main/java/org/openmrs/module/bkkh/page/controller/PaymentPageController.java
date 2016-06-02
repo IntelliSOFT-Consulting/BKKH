@@ -1,5 +1,6 @@
 package org.openmrs.module.bkkh.page.controller;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,8 +64,13 @@ public class PaymentPageController {
 			setModeOfPayment(modeOfPaymentId, chargesService, payment);
 		}
 		try {
+			Calendar endOfDay = Calendar.getInstance();
+			endOfDay.setTime(payment.getPaymentDate());
+			endOfDay.set(Calendar.HOUR_OF_DAY, 23);
+			endOfDay.set(Calendar.MINUTE, 59);
+			endOfDay.set(Calendar.SECOND, 59);
 			Visit visit = Context.getService(AdtService.class).ensureVisit(
-					charges.getPatient(), payment.getPaymentDate(),
+					charges.getPatient(), endOfDay.getTime(),
 					session.getSessionLocation());
 			payment.setVisit(visit);
 		} catch (IllegalArgumentException e) {
