@@ -3,7 +3,6 @@
     "id": "bkkh.finance.findPatient",
     "instanceOf": "coreapps.template.findPatient",
     "description": "Record patient charges and payment information",
-    "order": 100
     "extensions": [
         {
             "id": "coreapps.activeVisitsHomepageLink",
@@ -12,7 +11,8 @@
             "label": "Manage Finance Records",
             "url": "coreapps/findpatient/findPatient.page?app=bkkh.finance.findPatient",
             "icon": "icon-book",
-            "requiredPrivilege": "App: bkkh.cashier"
+            "requiredPrivilege": "App: bkkh.cashier",
+            "order": 500
         }
     ],
     "config": {
