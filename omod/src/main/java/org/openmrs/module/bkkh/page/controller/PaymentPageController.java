@@ -1,9 +1,12 @@
 package org.openmrs.module.bkkh.page.controller;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.Visit;
 import org.openmrs.api.context.Context;
@@ -69,9 +72,14 @@ public class PaymentPageController {
 			endOfDay.set(Calendar.HOUR_OF_DAY, 23);
 			endOfDay.set(Calendar.MINUTE, 59);
 			endOfDay.set(Calendar.SECOND, 59);
-			Visit visit = Context.getService(AdtService.class).ensureVisit(
-					charges.getPatient(), endOfDay.getTime(),
-					session.getSessionLocation());
+			Visit visit = null;
+			List<Encounter> encounters = Context.getEncounterService().getEncounters(charges.getPatient(), null, null, endOfDay.getTime(), null, null, null, null, null, false);
+			if (encounters.size() > 0) {
+				Date lastEncounterDatetime = encounters.get(encounters.size() - 1).getEncounterDatetime();
+				visit = Context.getService(AdtService.class).ensureVisit(charges.getPatient(), lastEncounterDatetime, session.getSessionLocation());
+			} else {
+				visit = Context.getService(AdtService.class).ensureVisit(charges.getPatient(), endOfDay.getTime(), session.getSessionLocation());
+			}
 			payment.setVisit(visit);
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage());

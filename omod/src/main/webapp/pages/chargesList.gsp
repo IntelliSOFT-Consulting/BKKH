@@ -37,7 +37,7 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient])}
 	<tbody>
 		<% chargesList.each { charges -> %>
 			<tr>
-				<td>${charges.date != null ? ui.formatDatetimePretty(charges.date) : '--'}</td>
+				<td>${charges.date != null ? ui.formatDatePretty(charges.date) : '--'}</td>
 				<td class="align-right">${formatter.format(charges.total)}</td>
 				<td class="align-right">${formatter.format(charges.balance)}</td>
 				<td>
