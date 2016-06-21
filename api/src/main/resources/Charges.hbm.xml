@@ -25,6 +25,7 @@
             <key column="charges_id" not-null="true" />
             <one-to-many class="org.openmrs.module.bkkh.Payment" />
         </set>
+        <many-to-one name="visit" class="org.openmrs.Visit" column="visit_id" not-null="false" />
     </class>
 
 </hibernate-mapping>

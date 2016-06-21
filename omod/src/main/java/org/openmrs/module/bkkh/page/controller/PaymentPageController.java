@@ -1,20 +1,13 @@
 package org.openmrs.module.bkkh.page.controller;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.openmrs.Encounter;
 import org.openmrs.Patient;
-import org.openmrs.Visit;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.appui.UiSessionContext;
 import org.openmrs.module.bkkh.Charges;
 import org.openmrs.module.bkkh.Payment;
 import org.openmrs.module.bkkh.api.ChargesService;
-import org.openmrs.module.emrapi.adt.AdtService;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.annotation.BindParams;
 import org.openmrs.ui.framework.annotation.SpringBean;
@@ -54,38 +47,22 @@ public class PaymentPageController {
 			UiSessionContext session,
 			UiUtils ui) {
 		Charges charges = chargesService.getCharges(chargesId);
-		if (payment.getId() != null) {
-			Payment oldPayment = chargesService.getPayment(payment.getId());
-			oldPayment.setPaid(payment.getPaid());
-			oldPayment.setPaymentDate(payment.getPaymentDate());
-			setChargeAccount(chargeAccountId, chargesService, oldPayment);
-			setModeOfPayment(modeOfPaymentId, chargesService, oldPayment);
-			payment = oldPayment;
-		} else {
-			payment.setCharges(charges);
-			setChargeAccount(chargeAccountId, chargesService, payment);
-			setModeOfPayment(modeOfPaymentId, chargesService, payment);
-		}
-		try {
-			Calendar endOfDay = Calendar.getInstance();
-			endOfDay.setTime(payment.getPaymentDate());
-			endOfDay.set(Calendar.HOUR_OF_DAY, 23);
-			endOfDay.set(Calendar.MINUTE, 59);
-			endOfDay.set(Calendar.SECOND, 59);
-			Visit visit = null;
-			List<Encounter> encounters = Context.getEncounterService().getEncounters(charges.getPatient(), null, null, endOfDay.getTime(), null, null, null, null, null, false);
-			if (encounters.size() > 0) {
-				Date lastEncounterDatetime = encounters.get(encounters.size() - 1).getEncounterDatetime();
-				visit = Context.getService(AdtService.class).ensureVisit(charges.getPatient(), lastEncounterDatetime, session.getSessionLocation());
+		if (payment.getPaid() > 0) {
+			if (payment.getId() != null) {
+				Payment oldPayment = chargesService.getPayment(payment.getId());
+				oldPayment.setPaid(payment.getPaid());
+				oldPayment.setPaymentDate(payment.getPaymentDate());
+				setChargeAccount(chargeAccountId, chargesService, oldPayment);
+				setModeOfPayment(modeOfPaymentId, chargesService, oldPayment);
+				payment = oldPayment;
 			} else {
-				visit = Context.getService(AdtService.class).ensureVisit(charges.getPatient(), endOfDay.getTime(), session.getSessionLocation());
+				payment.setCharges(charges);
+				setChargeAccount(chargeAccountId, chargesService, payment);
+				setModeOfPayment(modeOfPaymentId, chargesService, payment);
 			}
-			payment.setVisit(visit);
-		} catch (IllegalArgumentException e) {
-			log.error(e.getMessage());
+			charges.addPayment(payment);
+			chargesService.saveCharges(charges);
 		}
-		charges.addPayment(payment);
-		chargesService.saveCharges(charges);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("patientId", charges.getPatient().getUuid());
 		params.put("chargesId", chargesId);

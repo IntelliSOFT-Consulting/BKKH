@@ -298,8 +298,18 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                             left: true
                         ])}
                     </div>
+                    <div style="clear:left"></div>
+                    <p style="dislay:block">
+                      ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                          label: "Charges Date",
+                          id:"chargesDate",
+                          formFieldName: "charges.date",
+                          useTime: false,
+                          defaultToday: true
+                       ])}
+                    </p>
                 </fieldset>
-                <fieldset display-template="&lt;p&gt;Total: {{field.[2]}}&lt;/p&gt; &lt;p&gt; Paid: {{field.[3]}}&lt;/p&gt; &lt;p&gt; Balance: {{field.[4]}}&lt;/p&gt;" >
+                <fieldset display-template="&lt;span&gt;Total: {{field.[2]}}&lt;/span&gt;, &lt;span&gt; Paid: {{field.[3]}}&lt;/span&gt;, &lt;span&gt; Balance: {{field.[4]}}&lt;/span&gt;" >
                     <legend>Payment</legend>
                     <p>
                         <label for="modeOfPayment">Mode of Payment</label>
@@ -313,9 +323,10 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                     <p>
                         ${ ui.includeFragment("uicommons", "field/datetimepicker", [
                             label: "Payment Date",
-                            id:"dateCharge",
+                            id:"paymentDate",
                             formFieldName: "payment.paymentDate",
-                            useTime: false
+                            useTime: false,
+                            defaultToday: true
                          ])}
                     </p>
                     <p>

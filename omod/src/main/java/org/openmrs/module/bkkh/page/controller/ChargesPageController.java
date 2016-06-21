@@ -66,17 +66,9 @@ public class ChargesPageController {
                     UiSessionContext session
             ) {
         charges.setPatient(patient);
-        charges.setDate(payment.getPaymentDate());
-        payment.setCharges(charges);
-        if (chargeAccountId != null) {
-            payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
-        }
-        if (modeOfPaymentId != null) {
-        	payment.setModeOfPayment(chargesService.getModeOfPayment(modeOfPaymentId));
-        }
         try {
             Calendar endOfDay = Calendar.getInstance();
-            endOfDay.setTime(payment.getPaymentDate());
+            endOfDay.setTime(charges.getDate());
             endOfDay.set(Calendar.HOUR_OF_DAY, 23);
             endOfDay.set(Calendar.MINUTE, 59);
             endOfDay.set(Calendar.SECOND, 59);
@@ -88,11 +80,21 @@ public class ChargesPageController {
             } else {
                 visit = Context.getService(AdtService.class).ensureVisit(patient, endOfDay.getTime(), session.getSessionLocation());
             }
-            payment.setVisit(visit);
+            charges.setVisit(visit);
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
         }
-        charges.addPayment(payment);
+
+        if (payment.getPaid() > 0D) {
+            payment.setCharges(charges);
+            if (chargeAccountId != null) {
+                payment.setChargeAccount(chargesService.getChargeAccount(chargeAccountId));
+            }
+            if (modeOfPaymentId != null) {
+                payment.setModeOfPayment(chargesService.getModeOfPayment(modeOfPaymentId));
+            }
+            charges.addPayment(payment);
+        }
         chargesService.saveCharges(charges);
         
         patientDomainWrapper.setPatient(patient);

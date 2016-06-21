@@ -14,7 +14,6 @@
         <property name="nhif" column="nhif" type="boolean" not-null="false" />
         <many-to-one name="chargeAccount" class="ChargeAccount" column="charge_account_id" not-null="true" />
         <many-to-one name="modeOfPayment" class="ModeOfPayment" column="mode_of_payment_id" not-null="false" />
-        <many-to-one name="charges" class="org.openmrs.module.bkkh.Charges" column="charges_id" not-null="true" />
-        <many-to-one name="visit" class="org.openmrs.Visit" column="visit_id" not-null="false" />
+        <many-to-one name="charges" class="Charges" column="charges_id" not-null="true" />
     </class>
 </hibernate-mapping>

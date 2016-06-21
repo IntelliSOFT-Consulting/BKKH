@@ -1,6 +1,7 @@
 package org.openmrs.module.bkkh;
 
 import org.openmrs.Patient;
+import org.openmrs.Visit;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class Charges {
 	private Double followUp = new Double(0);
 	private ModeOfPayment modeOfPayment;
 	private Set<Payment> payments = new HashSet<Payment>();
+	private Visit visit;
 
 	public Integer getId() {
 		return id;
@@ -161,6 +163,14 @@ public class Charges {
 		}
 		Double total = getTotal();
 		return total - totalPayment;
+	}
+
+	public Visit getVisit() {
+		return visit;
+	}
+
+	public void setVisit(Visit visit) {
+		this.visit = visit;
 	}
 
 }

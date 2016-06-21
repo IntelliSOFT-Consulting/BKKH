@@ -274,4 +274,23 @@
             <where>uuid = 'ae2d20c3-ccf9-11e5-9255-34e6d77c15d6'</where>
         </delete>
     </changeSet>
+    <changeSet author="gwasilwa" id="link_charges_to_visit">
+        <comment >
+            Add link to visit
+        </comment>
+        <addColumn tableName="bkkh_charges">
+            <column name="visit_id" type="int"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="bkkh_charges" baseColumnNames="visit_id"
+                         constraintName="fk_visit_charges"
+                         referencedTableName="visit" referencedColumnNames="visit_id" />
+    </changeSet>
+    <changeSet author="gwasilwa" id="drop_fk_visit_payment">
+        <dropForeignKeyConstraint baseTableName="bkkh_payment" constraintName="fk_visit_payment"/>
+    </changeSet>
+    <changeSet author="gwasilwa" id="drop_visit_id_column_in_bkkh_payment">
+        <dropColumn
+            columnName="visit_id"
+            tableName="bkkh_payment"/>
+    </changeSet>
 </databaseChangeLog>
