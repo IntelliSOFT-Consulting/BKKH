@@ -13,7 +13,7 @@
 
     <developers>
         <developer>
-            <name>intellisoft</name>
+            <name>intelliSOFT</name>
         </developer>
     </developers>
 
@@ -23,9 +23,10 @@
     </organization>
 
     <scm>
-        <connection>scm:svn:https://svn.openmrs.org/openmrs-modules/bkkh/trunk/</connection>
-        <developerConnection>scm:svn:https://svn.openmrs.org/openmrs-modules/bkkh/trunk/</developerConnection>
-        <url>https://svn.openmrs.org/openmrs-modules/bkkh/trunk/</url>
+        <connection>scm:https://github.com/IntelliSOFT-Consulting/BKKH-Finance.git</connection>
+        <developerConnection>scm:https://github.com/IntelliSOFT-Consulting/BKKH-Finance.git</developerConnection>
+        <url>https://github.com/IntelliSOFT-Consulting/BKKH-Finance</url>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
@@ -34,7 +35,7 @@
     </modules>
 
     <properties>
-        <openMRSVersion>1.11.2</openMRSVersion>
+        <openMRSVersion>2.0.5</openMRSVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
