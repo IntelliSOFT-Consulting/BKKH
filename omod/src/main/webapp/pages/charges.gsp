@@ -361,6 +361,10 @@ ${ui.includeFragment("coreapps", "patientHeader", [patient: patient.patient])}
                         </select>
                         <span class="error"></span>
                     </p>
+                    <p>
+                        <label for="comments">Comments</label>
+                        <textarea id="comments" name="charges.comments" cols="50" value="${charges.comments}"></textarea>
+                    </p>
                 </fieldset>
                 
                 <div style="margin-top: 10px;">

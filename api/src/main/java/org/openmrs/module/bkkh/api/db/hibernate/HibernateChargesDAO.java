@@ -84,7 +84,9 @@ public class HibernateChargesDAO implements ChargesDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ModeOfPayment> getModeOfPayments() {
-		return sessionFactory.getCurrentSession().createCriteria(ModeOfPayment.class).list();
+		return sessionFactory.getCurrentSession().createCriteria(ModeOfPayment.class)
+				.addOrder(Order.asc("modeOfPayment"))
+				.list();
 	}
 
 	@Override
