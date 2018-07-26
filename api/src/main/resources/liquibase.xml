@@ -55,6 +55,14 @@
                                  constraintName="fk_charges_patient"
                                  referencedTableName="patient" referencedColumnNames="patient_id" />
     </changeSet>
+    <changeSet author="amoko" id="alter_bkkh_charges_table">
+        <comment >
+            Add comments column
+        </comment>
+        <addColumn tableName="bkkh_charges">
+            <column name="comments" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
     <changeSet id="bkkh_payment_create_table" author="gwasilwa">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -220,6 +228,19 @@
             <column name="uuid" value="ab386686-8a14-4303-bb74-af213b01660b"></column>
         </insert>
     </changeSet>
+    <changeSet id="add_additional_payment_modes" author="amoko">
+        <comment>Add additional payment modes</comment>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="7" />
+            <column name="mode_of_payment" value="WATSI"></column>
+            <column name="uuid" value="cd387786-8a14-4303-bb74-af213b01450v"></column>
+        </insert>
+        <insert tableName="bkkh_mode_of_payment">
+            <column name="mode_of_payment_id" value="8" />
+            <column name="mode_of_payment" value="KH Debt Account"></column>
+            <column name="uuid" value="576386686-8a56-4333-cc74-agt213b78946"></column>
+        </insert>
+    </changeSet>
     <changeSet author="gwasilwa" id="add_mode_of_payment_link">
         <addColumn tableName="bkkh_payment">
             <column name="mode_of_payment_id" type="int"/>
@@ -258,6 +279,7 @@
         </update>
         <dropColumn tableName="bkkh_payment" columnName="mode_of_payment"/>
     </changeSet>
+
     <changeSet author="gwasilwa" id="orphan-payments-linked-to-needy-fund-charge-account">
         <comment>
             Change payments linked to 'Needy Fund' charge account to null

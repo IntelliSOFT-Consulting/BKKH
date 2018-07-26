@@ -20,6 +20,7 @@
         <property name="xray" column="xray_cost" type="double" not-null="false" />
         <property name="supplies" column="supplies_cost" type="double" not-null="false" />
         <property name="file" column="file_cost" type="double" not-null="false" />
+        <property name="comments" column="comments" type="java.lang.String" not-null="false" length="1024" />
         <property name="followUp" column="follow_up_cost" type="double" not-null="false" />
         <set name="payments" cascade="all" order-by="payment_id" inverse="true">
             <key column="charges_id" not-null="true" />

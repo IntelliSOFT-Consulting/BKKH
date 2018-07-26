@@ -27,6 +27,7 @@ public class Charges {
 	private ModeOfPayment modeOfPayment;
 	private Set<Payment> payments = new HashSet<Payment>();
 	private Visit visit;
+	private String comments;
 
 	public Integer getId() {
 		return id;
@@ -173,4 +174,11 @@ public class Charges {
 		this.visit = visit;
 	}
 
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
 }
